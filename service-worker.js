@@ -7,7 +7,8 @@ const filesToCache = [
   '/css/main.css',
   '/js/main.js',
   '/jquery/jquery.min.js',
-  '/media/mosque_croped.png'
+  '/media/mosque_croped.png',
+  'manifest.json'
 ];
 
 // Install the service worker and cache the app's resources
