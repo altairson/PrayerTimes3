@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="./css/main.css">
+    <title>Azan Pankisi</title>
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+    <div class="slider-container">
+        <div id="today" class="slide">
+            <div id="day">
+                <div class="prayer" class="hidden">
+                    <div class="empty">
+                        
+                    </div>
+                    <div class="name">Fajr</div>
+                    <div class="time"></div>
+                </div>
+                <div class="prayer">
+                    <div class="empty">
+                        
+                    </div>
+                    <div class="name">Zuhr</div>
+                    <div class="time"></div>
+                </div>
+                <div class="prayer">
+                    <div class="empty">
+        
+                    </div>
+                    <div class="name">Asr</div>
+                    <div class="time"></div>
+                </div>
+                <div class="prayer">
+                    <div class="empty">
+                        
+                    </div>
+                    <div class="name">Maghr</div>
+                    <div class="time"></div>
+                </div>
+                <div class="prayer">
+                    <div class="empty">
+                        
+                    </div>
+                    <div class="name">Isha</div>
+                    <div class="time"></div>
+                </div>
+                <div id="note" class="hidden">
+                    all prayers for today are done!
+                </div>
+            </div>
+        </div>
+        <div id="year" class="slide">
+            <div id="main">
+                <div id="jan" class="month">January</div>
+                <div id="feb" class="month">February</div>
+                <div id="mar" class="month">March</div>
+                <div id="apr" class="month">April</div>
+                <div id="may" class="month">May</div>
+                <div id="jun" class="month">June</div>
+                <div id="jul" class="month">July</div>
+                <div id="aug" class="month">August</div>
+                <div id="sep" class="month">September</div>
+                <div id="oct" class="month">October</div>
+                <div id="nov" class="month">November</div>
+                <div id="dec" class="month">December</div>
+            </div>
+        </div>
+        <div class="slide">
+            <div id="month">
+                <div class="header">
+                    
+                </div>
+                <div class="content">
+                    <table id="table">
+                        <thead>
+                            <tr>			
+                                <th>day</th>
+                                <th>fajr</th>
+                                <th>zuhr</th>
+                                <th>asr</th>
+                                <th>maghr</th>
+                                <th>isha</th>
+                            </tr>
+                        </thead>
+                        <tbody id="monthData">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navigation">
+        <button class="next">previous</button>
+        <button class="prev">next</button>
+    </div>
+    <script>
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/service-worker.js')
+              .then(function(registration) {
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+              })
+              .catch(function(err) {
+                console.log('ServiceWorker registration failed: ', err);
+              });
+          });
+        }
+    </script>
+    <script src="./js/main.js"></script>
+</body>
+</html>
