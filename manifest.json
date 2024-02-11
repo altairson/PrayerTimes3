@@ -2,7 +2,7 @@
     "name": "Azan Pankisi",
     "short_name": "Azan",
     "description": "Prayer times in Pankisi",
-    "start_url": "/index.html",
+    "start_url": "index.html",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#007bff",

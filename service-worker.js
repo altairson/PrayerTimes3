@@ -3,11 +3,11 @@
 const cacheName = 'my-app-cache';
 const filesToCache = [
   '/',
-  '/index.html',
-  '/css/main.css',
-  '/js/main.js',
-  '/jquery/jquery.min.js',
-  '/media/mosque_croped.png',
+  'index.html',
+  'css/main.css',
+  'js/main.js',
+  'jquery/jquery.min.js',
+  'media/mosque_croped.png',
   'manifest.json'
 ];
 
