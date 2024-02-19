@@ -7,7 +7,22 @@ $(document).ready(function() {
     var SLIDE_INDEX = 0;
     var SLIDES = $(".slide");
     var TOTAL_SLIDES = SLIDES.length;
+    var centerX = 100;
+    var centerY = 100;
+    var radius = 50;
+    var startAngle = Math.PI; 
+    var endAngleMoon = Math.PI / 2;
+    var endAngleSun = 2 * Math.PI;
+
+    var currentAngle = startAngle;
+    var moon_increment_x = 2.2;
+    var moon_increment_y = 0.6;
+
+    var sun_increment_x = 1.1;
+    var sun_increment_y = 0.7;
     const minimalSwipeDistance = 50;
+
+    var PrayerTimer = 5;
 
 
     SLIDES[SLIDE_INDEX].classList.add("active-slide");
@@ -60,6 +75,98 @@ $(document).ready(function() {
         }
     }
 
+
+    function calculateMoonCicle() {
+        let today_isha = $(".time")[4].innerText;
+        var current_date = new Date();
+        var month_index = current_date.getMonth();
+        CURRENT_MONTH = prayerTimes[month_index];
+        var tomorrow = current_date.getDate();
+        var today_times = CURRENT_MONTH[tomorrow];
+        let tomorrow_fajr = today_times[0];
+        let today_minutes = ((24 - parseInt(today_isha.split(':')[0])) * 60) + parseInt(today_isha.split(':')[1]);
+        let tomorrow_minutes =  (parseInt(tomorrow_fajr.split(':')[0]) * 60) + parseInt(tomorrow_fajr.split(':')[1]);
+        let minutes = today_minutes + tomorrow_minutes;
+        return minutes;
+    }
+
+
+
+
+    function calculateCoordinates(centerX, centerY, radius, angle) {
+        var x = centerX + radius * Math.cos(angle);
+        var y = centerY + radius * Math.sin(angle);
+        return { x: x, y: y };
+    }
+
+    function moonFrame(x, y) {
+        let moon = $("#moon")[0];
+        moon.style.top = y + "%";
+        moon.style.left = x + "%";
+    }
+
+    function sunFrame(x, y) {
+        let moon = $("#sun")[0];
+        moon.style.top = y + "%";
+        moon.style.left = x + "%";
+    }
+
+    var test = 0;
+    function animateSun() {
+        var coordinates = calculateCoordinates(centerX, centerY, radius, currentAngle);
+        currentAngle += 0.01;
+        let x = coordinates.x; // 50 - 150
+        let y = coordinates.y; // 100 - 50 - 100
+        let y1 = Math.abs((y - 50)) * sun_increment_y; 
+        let x1 = Math.abs((x - 50)) * sun_increment_x - 20;
+        sunFrame(x1, y1);
+        test++;
+        if (currentAngle <= endAngleSun) {
+            console.log(test);
+            setTimeout(animateSun, 100);
+        }
+        else {
+            currentAngle = startAngle;
+            $(".night").removeClass("hidden");
+            $("#sun").addClass("hidden");
+            $("#moon").removeClass("hidden");
+            animateMoon();
+        }
+    }
+
+    // animateSun();
+
+    function animateMoon() {
+        var coordinates = calculateCoordinates(centerX, centerY, radius, currentAngle);
+        currentAngle -= 0.01;
+        let x = coordinates.x;
+        let y = coordinates.y;
+        let y1 = Math.abs((150 - y)) * moon_increment_y; 
+        let x1 = Math.abs((x - 50)) * moon_increment_x - 10;
+        moonFrame(x1, y1);
+
+        if (currentAngle >= endAngleMoon) {
+            console.log(x, y);
+            setTimeout(animateMoon, 100);
+        }
+        else {
+            currentAngle = startAngle;
+            $("#moon").addClass("hidden");
+            $("#sun").removeClass("hidden");
+            $(".night").addClass("hidden");
+            animateSun();
+        }
+    }
+
+    $("#settingsIcon").click(function() {
+        $("#settings").toggleClass("hidden");
+    })
+
+    $("#aboutUsIcon").click(function() {
+        $("#aboutUs").toggleClass("hidden");
+    })
+
+
     function currentDate() {
         var current_date = new Date();
         var month_index = current_date.getMonth();
@@ -93,7 +200,7 @@ $(document).ready(function() {
             let mt = today_times[i].split(":")[1];
             let nr = (parseInt(hr) * 60) + (parseInt(mt));
             if(nr > number) {
-                debugger
+                
                 index = i;
                 break;
             }
@@ -113,7 +220,6 @@ $(document).ready(function() {
             let hour = dt.getHours();
             let minutes = dt.getMinutes();
             let number = (parseInt(hour) * 60) + (parseInt(minutes));
-            debugger
             let target_div = $(".empty")[index];
             target_div.innerHTML = "";
             target_div.classList.add("target-div");
@@ -132,10 +238,15 @@ $(document).ready(function() {
             }
             $(".prayer")[index].classList.add("next-prayer");
             $(".target-div").append(div);
-            if(nr < number) {
+            if(nr <= number && ((number - nr) <= PrayerTimer)) {
+                // 5 minutes
+                $(".prayer")[index].classList.add("prayer-time");
+            }
+            else if(nr < number) {
                 clearInterval(x);
                 findNextPrayer(today_times);
             }
+            
         }, 1000);
     }
 
@@ -152,7 +263,7 @@ $(document).ready(function() {
         let current_date = new Date();
         let month_index = current_date.getMonth();
         let day = -1; // if its not -1 it means we are in current month
-        debugger
+        
         if(month_index == index) {
             day = current_date.getDate() - 1;
         }
@@ -594,5 +705,5 @@ $(document).ready(function() {
 
 
     currentDate();
-
+    calculateMoonCicle();
 })

@@ -2,7 +2,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    font-family: cursive;
+    font-family:monospace;
 }
 
 #data td {
@@ -21,9 +21,200 @@
 body {
     width: 100vw;
     height: 100vh;
-    background-image: url(../media/mosque_croped.png);
+    background-image: url(../media/mosque_back1.jpg);
     background-repeat: no-repeat;
     background-size: cover;
+    background-position-x: 26%;
+}
+
+.mosque {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-image: url(../media/mosque_front1.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: 26%;
+    z-index: 6;
+}
+
+#settingsIcon {
+    background-image: url(../media/settings.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    z-index: 10;
+    margin: 10px;
+    filter: invert(1) drop-shadow(2px 4px 6px black);
+    left: 0;
+    top: 0;
+}
+
+#aboutUsIcon {
+    background-image: url(../media/aboutus.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    z-index: 10;
+    margin: 10px;
+    right: 0;
+    top: 0;
+    filter: invert(1);
+}
+
+#settings {
+    position: absolute;
+    background-color: white;
+    width: 90%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 10;
+    height: fit-content;
+    box-shadow: 0px 0px 10px 2px #333;
+    border-radius: 5px;
+}
+
+#aboutUs {
+    position: absolute;
+    background-color: white;
+    width: 90%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 10;
+    height: fit-content;
+    box-shadow: 0px 0px 10px 2px #333;
+    border-radius: 5px;
+}
+
+#settings h1 {
+    background-color: green;
+    color: white;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    padding: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#table {
+    width: 90%;
+    height: 100%;
+}
+
+#aboutUs h1 {
+    background-color: green;
+    color: white;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    padding: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.set-main {
+    width: 100%;
+    padding: 5px;
+    background-color: rgb(218, 218, 218);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.subset {
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    margin: 5px 0px;
+}
+
+.subset h2 {
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid rgb(218, 218, 218);;
+}
+
+.set-content {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    height: fit-content;
+}
+
+.set {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0px;
+    border-bottom: 1px solid rgb(218, 218, 218);;
+}
+
+.night {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 4;
+    background-image: url(../media/night.jpg);
+    opacity: 1;
+    background-size: 110%;
+    background-repeat: no-repeat;
+    background-position-y: 52%;
+    background-position-x: 19%;
+}
+
+.prayer-time {
+    background-color: red !important;
+}
+
+#moon {
+    background-image: url(../media/moon2.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    z-index: 5;
+    filter: drop-shadow(5px 5px 10px black);
+}
+
+#sun {
+    background-image: url(../media/sun.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    z-index: 5;
 }
 
 .hidden {
@@ -181,10 +372,13 @@ body {
 }
 
 
+
 .slider-container {
     width: 100%;
     height: calc(100% - 50px);
     overflow: hidden; 
+    z-index: 7;
+    position: absolute;
   }
   
   .slide {
@@ -204,6 +398,9 @@ body {
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
+    position: absolute;
+    z-index: 7;
+    bottom: 0;
   }
 
   .navigation button {
