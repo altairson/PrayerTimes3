@@ -9,183 +9,284 @@
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
-    <div class="mosque"></div>
-    <div class="night hidden"></div>
-    <div id="settingsIcon">
-    </div>
-    <div id="aboutUsIcon"></div>
-    <div id="aboutUs" class="hidden">
-        <h1>About us</h1>
-        <div class="subset">
-            <h2 class="headline">
-                Who are we?
-            </h2>
-            <div class="set-content">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus quos eum neque soluta? Vitae, at sed. Sit deleniti explicabo tenetur. Beatae doloribus dolor provident labore ipsam commodi est sunt fuga!
-            </div>
-        </div>
-        <div class="subset">
-            <h2 class="headline">
-                What we do?
-            </h2>
-            <div class="set-content">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus quos eum neque soluta? Vitae, at sed. Sit deleniti explicabo tenetur. Beatae doloribus dolor provident labore ipsam commodi est sunt fuga!
-            </div>
-        </div>
-        <div class="subset">
-            <h2 class="headline">
-                Contact?
-            </h2>
-            <div class="set-content">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Natus quos eum neque soluta? Vitae, at sed. Sit deleniti explicabo tenetur. Beatae doloribus dolor provident labore ipsam commodi est sunt fuga!
-            </div>
-        </div>
-    </div>
-    <div id="settings" class="hidden">
-        <h1>Settings</h1>
-        <div class="set-main">
-            <div class="subset">
-                <h2 class="headline">
-                    General
-                </h2>
-                <div class="set-content">
-                    <div class="set">
-                        <div class="key">language</div>
-                        <div class="value">
-                            <select name="" id="lan">
-                                <option value="1">Qisti</option>
-                                <option value="2">ქართული</option>
-                                <option value="3">Russian</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="set">
-                        <div class="key">Dark theme</div>
-                        <div class="value">
-                            <input type="checkbox" name="" id="darkTheme">
-                        </div>
-                    </div>
-                </div>
-            </div>
-    
-            <div class="subset">
-                <h2 class="headline">
-                    Notifications
-                </h2>
-                <div class="set-content">
-                    <div class="set">
-                        <div class="key">Notify When prayer time</div>
-                        <div class="value">
-                            <input type="checkbox" name="" id="prayerOn">
-                        </div>
-                    </div>
-                    <div class="set">
-                        <div class="key">Play sound</div>
-                        <div class="value">
-                            <input type="checkbox" name="" id="SoundOn">
-                        </div>
-                    </div>
-                    <div class="set">
-                        <div class="key">notify 5 minutes before prayer</div>
-                        <div class="value">
-                            <input type="checkbox" name="" id="beforePrayerOn">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="moon" class="hidden"></div>
-    <div id="sun"></div>
-    <div class="slider-container">
-        <div id="today" class="slide">
-            <div id="day">
-                <div class="prayer" class="hidden">
-                    <div class="empty">
-                        
-                    </div>
-                    <div class="name">Fajr</div>
-                    <div class="time"></div>
-                </div>
-                <div class="prayer">
-                    <div class="empty">
-                        
-                    </div>
-                    <div class="name">Zuhr</div>
-                    <div class="time"></div>
-                </div>
-                <div class="prayer">
-                    <div class="empty">
-        
-                    </div>
-                    <div class="name">Asr</div>
-                    <div class="time"></div>
-                </div>
-                <div class="prayer">
-                    <div class="empty">
-                        
-                    </div>
-                    <div class="name">Maghr</div>
-                    <div class="time"></div>
-                </div>
-                <div class="prayer">
-                    <div class="empty">
-                        
-                    </div>
-                    <div class="name">Isha</div>
-                    <div class="time"></div>
-                </div>
-                <div id="note" class="hidden">
-                    all prayers for today are done!
-                </div>
-            </div>
-        </div>
-        <div id="year" class="slide">
-            <div id="main">
-                <div id="jan" class="month">January</div>
-                <div id="feb" class="month">February</div>
-                <div id="mar" class="month">March</div>
-                <div id="apr" class="month">April</div>
-                <div id="may" class="month">May</div>
-                <div id="jun" class="month">June</div>
-                <div id="jul" class="month">July</div>
-                <div id="aug" class="month">August</div>
-                <div id="sep" class="month">September</div>
-                <div id="oct" class="month">October</div>
-                <div id="nov" class="month">November</div>
-                <div id="dec" class="month">December</div>
-            </div>
-        </div>
-        <div class="slide">
-            <div id="month">
-                <div class="header">
-                    
-                </div>
-                <div class="content">
-                    <table id="table">
-                        <thead>
-                            <tr>			
-                                <th>day</th>
-                                <th>fajr</th>
-                                <th>zuhr</th>
-                                <th>asr</th>
-                                <th>maghr</th>
-                                <th>isha</th>
-                            </tr>
-                        </thead>
-                        <tbody id="monthData">
+<div class="mosque"></div>
+<div class="night hidden"></div>
 
-                        </tbody>
-                    </table>
+<div id="contactUs" class="hidden">
+    <h1 class="text">Contact Us</h1>
+    <div class="subset">
+        <div class="set-content text">
+            <p>Your feedback matters to us! Connect with us on social media to share your thoughts and suggestions. Stay updated on our projects and reach out to us for any inquiries. Follow us on:</p>
+            <br>
+            <p><a href="mailto:devpankisi@gmail.com">Email</a></p>
+            <p><a href="https://www.instagram.com/devpankisi/">Instagram</a></p>
+            <p><a href="https://t.me/pankisi_dev_bot">Telegram</a></p>
+            <br>
+            <p>Remember, your input helps us shape a better future for Pankisi. For more information and to explore our portfolio, visit our website: <a href="http://devpankisi.com">DevPankisi.com</a>.</p>
+        </div>
+    </div>
+    <div class="close-btn">
+        <button class="close text">close</button>
+    </div>
+</div>
+
+
+<div id="aboutUs" class="hidden">
+    <h1 class="text">Info</h1>
+    <div class="subset">
+        <div class="set-content text">
+            Welcome to <b>AzanPankisi</b>, your ultimate companion for accessing prayer times in Pankisi. Stay connected with your faith effortlessly!
+        </div>
+    </div>
+    <div class="subset">
+        <h2 class="headline text">
+            About App
+        </h2>
+        <div class="set-content text">
+            <b>AzanPankisi</b> is designed to provide easy access to prayer times in Pankisi, catering specifically to the Islamic community. Never miss a prayer with our intuitive app, ensuring you stay connected to your faith no matter where you are.
+        </div>
+    </div>
+    <div class="subset">
+        <h2 class="headline text">
+            About us
+        </h2>
+        <div class="icon">
+
+        </div>
+        <div class="set-content text">
+            <p>We are the <b>DevPankisi</b> team, a group of passionate individuals from Pankisi dedicated to serving our community through technology. Meet our team members:</p>
+            <br>
+            <p>Aslan Borchashvili</p>
+            <p>Shobur Margoev</p>
+            <p>Suleiman Mutoshvili</p>
+            <br>
+        </div>
+        <div class="set-content text">
+            At <b>DevPankisi</b> we specialize in developing apps and websites tailored to the unique needs of the Pankisi community. Our mission is to enhance accessibility, connectivity, and convenience for everyone in our community. With AzanPankisi as our first offering, we're committed to creating more innovative solutions to empower and uplift Pankisi.
+        </div>
+    </div>
+    <div class="close-btn">
+        <button class="close text">close</button>
+    </div>
+</div>
+<div id="settings" class="hidden">
+    <h1>Settings</h1>
+    <div class="set-main">
+        <div class="subset">
+            <h2 class="headline text">
+                General
+            </h2>
+            <div class="set-content">
+                <div class="set">
+                    <div class="key">language</div>
+                    <div class="value">
+                        <select name="" id="lan">
+                            <option class="" value="0">Qisti</option>
+                            <option selected class="" value="1">English</option>
+                            <option class="" value="2">Russian</option>
+                            <option class="" value="3">ქართული</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="set">
+                    <div class="key text">Dark theme</div>
+                    <div class="value">
+                        <input type="checkbox" name="" id="darkTheme">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="subset">
+            <h2 class="headline text">
+                Notifications
+            </h2>
+            <div class="set-content">
+                <div class="set">
+                    <div class="key text">Notify When prayer time</div>
+                    <div class="value">
+                        <input type="checkbox" name="" id="prayerOn">
+                    </div>
+                </div>
+                <div class="set">
+                    <div class="key text">Play sound</div>
+                    <div class="value">
+                        <input type="checkbox" name="" id="SoundOn">
+                    </div>
+                </div>
+                <div class="set">
+                    <div class="key text">notify 5 minutes before prayer</div>
+                    <div class="value">
+                        <input type="checkbox" name="" id="beforePrayerOn">
+                    </div>
+                </div>
+                <div class="set">
+                    <i style="color: red;">*these settings are not working at the moment, we are working on it and will be included in next update!</i>
                 </div>
             </div>
         </div>
     </div>
-    <div class="navigation">
-        <button class="next">previous</button>
-        <button class="prev">next</button>
+    <div class="close-btn">
+        <button class="close text">close</button>
     </div>
-    <script>
+</div>
+<div id="moon" class="hidden"></div>
+<div id="sun"></div>
+<div class="slider-container">
+    <div id="today" class="slide">
+        <div id="day">
+            <div class="prayer">
+                <div class="outer-border">
+                    <div class="mid-border">
+                        <img class="ornament top-left" src="./media/ornament2.png" alt="">
+                        <img class="ornament top-right" src="./media/ornament2.png" alt="">
+                        <img class="ornament bottom-left" src="./media/ornament2.png" alt="">
+                        <img class="ornament bottom-right" src="./media/ornament2.png" alt="">
+                        <div class="inner-border">
+                            <div class="div">
+                                <div class="name text">Fajr</div>
+                                <div class="time"></div>
+                            </div>
+                            <div class="empty"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prayer">
+                <div class="outer-border">
+                    <div class="mid-border">
+                        <img class="ornament top-left" src="./media/ornament2.png" alt="">
+                        <img class="ornament top-right" src="./media/ornament2.png" alt="">
+                        <img class="ornament bottom-left" src="./media/ornament2.png" alt="">
+                        <img class="ornament bottom-right" src="./media/ornament2.png" alt="">
+                        <div class="inner-border">
+                            <div class="div">
+                                <div class="name text">Zuhr</div>
+                                <div class="time"></div>
+                            </div>
+                            <div class="empty"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prayer">
+                <div class="outer-border">
+                    <div class="mid-border">
+                        <img class="ornament top-left" src="./media/ornament2.png" alt="">
+                        <img class="ornament top-right" src="./media/ornament2.png" alt="">
+                        <img class="ornament bottom-left" src="./media/ornament2.png" alt="">
+                        <img class="ornament bottom-right" src="./media/ornament2.png" alt="">
+                        <div class="inner-border">
+                            <div class="div">
+                                <div class="name text">Asr</div>
+                                <div class="time"></div>
+                            </div>
+                            <div class="empty"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prayer">
+                <div class="outer-border">
+                    <div class="mid-border">
+                        <img class="ornament top-left" src="./media/ornament2.png" alt="">
+                        <img class="ornament top-right" src="./media/ornament2.png" alt="">
+                        <img class="ornament bottom-left" src="./media/ornament2.png" alt="">
+                        <img class="ornament bottom-right" src="./media/ornament2.png" alt="">
+                        <div class="inner-border">
+                            <div class="div">
+                                <div class="name text">Maghr</div>
+                                <div class="time"></div>
+                            </div>
+                            <div class="empty"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prayer">
+                <div class="outer-border">
+                    <div class="mid-border">
+                        <img class="ornament top-left" src="./media/ornament2.png" alt="">
+                        <img class="ornament top-right" src="./media/ornament2.png" alt="">
+                        <img class="ornament bottom-left" src="./media/ornament2.png" alt="">
+                        <img class="ornament bottom-right" src="./media/ornament2.png" alt="">
+                        <div class="inner-border">
+                            <div class="div">
+                                <div class="name text">Isha</div>
+                                <div class="time"></div>
+                            </div>
+                            <div class="empty"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="note" class="hidden text">
+                all prayers for today are done!
+            </div>
+        </div>
+    </div>
+    <div id="year" class="slide">
+        <div id="main">
+            <div id="jan" class="month text">January</div>
+            <div id="feb" class="month text">February</div>
+            <div id="mar" class="month text">March</div>
+            <div id="apr" class="month text">April</div>
+            <div id="may" class="month text">May</div>
+            <div id="jun" class="month text">June</div>
+            <div id="jul" class="month text">July</div>
+            <div id="aug" class="month text">August</div>
+            <div id="sep" class="month text">September</div>
+            <div id="oct" class="month text">October</div>
+            <div id="nov" class="month text">November</div>
+            <div id="dec" class="month text">December</div>
+        </div>
+    </div>
+    <div class="slide">
+        <div id="month">
+            <div class="header">
+
+            </div>
+            <div class="content">
+                <table id="table">
+                    <thead>
+                    <tr>
+                        <th class="text">day</th>
+                        <th class="text">fajr</th>
+                        <th class="text">zuhr</th>
+                        <th class="text">asr</th>
+                        <th class="text">maghr</th>
+                        <th class="text">isha</th>
+                    </tr>
+                    </thead>
+                    <tbody id="monthData">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="other" class="slide">
+        <div class="options">
+            <div id="settings_btn" class="option text">Settings</div>
+            <div id="aboutus_btn" class="option text">About Us</div>
+            <div id="contact_btn" class="option text">Contact Us</div>
+        </div>
+    </div>
+</div>
+<div class="navigation">
+    <button class="next"><</button>
+    <div class="indicators">
+        <div class="indicator active"></div>
+        <div class="indicator"></div>
+        <div class="indicator"></div>
+        <div class="indicator"></div>
+    </div>
+    <button class="prev">></button>
+</div>
+<div class="hidden">
+    <div id="remaining" class="text">REMAINING</div>
+</div>
+<script>
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', function() {
             navigator.serviceWorker.register('service-worker.js')
@@ -198,6 +299,6 @@
           });
         }
     </script>
-    <script src="./js/main.js"></script>
+<script src="./js/main.js"></script>
 </body>
 </html>

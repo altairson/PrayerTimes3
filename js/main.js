@@ -1,7 +1,10 @@
 $(document).ready(function() {
-    const URL = "https://script.google.com/macros/s/AKfycbwp5LB_ddB-zptLxxhaCXA80eI66tdcJfS3cw7l-d2GId7paOhHwUJpI0gczM3AediJnw/exec";
+    const URL = "https://script.google.com/macros/s/AKfycbwBbQHotFk1fOJz39ePPYFt4pQAQOkdxSSQhEvtL19L2lGSREvX4iHcRNJkcUcjMD3tyA/exec";
     var DATA = []; // will be filled from spreadsheet
-    const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November" ,"December"];
+    const MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November" ,"December"];
+    const MONTHS_RU = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November" ,"December"];
+    const MONTHS_GE = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November" ,"December"];
+    const MONTHS_QI = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November" ,"December"];
     var CURRENT_MONTH = [];
 
     var SLIDE_INDEX = 0;
@@ -10,7 +13,7 @@ $(document).ready(function() {
     var centerX = 100;
     var centerY = 100;
     var radius = 50;
-    var startAngle = Math.PI; 
+    var startAngle = Math.PI;
     var endAngleMoon = Math.PI / 2;
     var endAngleSun = 2 * Math.PI;
 
@@ -28,15 +31,21 @@ $(document).ready(function() {
     SLIDES[SLIDE_INDEX].classList.add("active-slide");
 
     function showNextSlide() {
+        $(".close").click();
         SLIDES[SLIDE_INDEX].classList.remove("active-slide");
+        $(".indicator")[SLIDE_INDEX].classList.remove("active");
         SLIDE_INDEX = (SLIDE_INDEX + 1) % TOTAL_SLIDES;
         SLIDES[SLIDE_INDEX].classList.add("active-slide");
+        $(".indicator")[SLIDE_INDEX].classList.add("active");
     }
 
     function showPreviousSlide() {
+        $(".close").click();
         SLIDES[SLIDE_INDEX].classList.remove("active-slide");
+        $(".indicator")[SLIDE_INDEX].classList.remove("active");
         SLIDE_INDEX = (SLIDE_INDEX - 1 + TOTAL_SLIDES) % TOTAL_SLIDES;
         SLIDES[SLIDE_INDEX].classList.add("active-slide");
+        $(".indicator")[SLIDE_INDEX].classList.add("active");
     }
 
     $('.next').click(function() {
@@ -52,12 +61,10 @@ $(document).ready(function() {
     var touchendX = 0;
 
     document.querySelector('.slider-container').addEventListener('touchstart', function(event) {
-        console.log("touch");
         touchstartX = event.changedTouches[0].screenX;
     }, false);
 
     document.querySelector('.slider-container').addEventListener('touchend', function(event) {
-        console.log("touch");
         touchendX = event.changedTouches[0].screenX;
         handleGesture();
     }, false);
@@ -75,23 +82,166 @@ $(document).ready(function() {
         }
     }
 
+    function changeLanguage(n) {
+        let texts = $(".text");
+        for(let i = 0; i < texts.length; i++) {
+            let text = translations[i][n];
+            texts[i].innerHTML = text;
+        }
+    }
 
+    $("#lan").change(function() {
+        let lan = parseInt($("#lan").val());
+        changeLanguage(lan);
+    })
+
+    var TODAY_MAGR_MINUTES = 0;
     function calculateMoonCicle() {
-        let today_isha = $(".time")[4].innerText;
+        let today_magr = $(".time")[3].innerText;
         var current_date = new Date();
         var month_index = current_date.getMonth();
         CURRENT_MONTH = prayerTimes[month_index];
         var tomorrow = current_date.getDate();
         var today_times = CURRENT_MONTH[tomorrow];
         let tomorrow_fajr = today_times[0];
-        let today_minutes = ((24 - parseInt(today_isha.split(':')[0])) * 60) + parseInt(today_isha.split(':')[1]);
+        let today_minutes = ((24 - parseInt(today_magr.split(':')[0])) * 60) + parseInt(today_magr.split(':')[1]);
+        TODAY_MAGR_MINUTES = today_minutes;
         let tomorrow_minutes =  (parseInt(tomorrow_fajr.split(':')[0]) * 60) + parseInt(tomorrow_fajr.split(':')[1]);
         let minutes = today_minutes + tomorrow_minutes;
         return minutes;
     }
 
+    var TODAY_FAJR_MINUTES = 0;
+
+    function calculateSunCicle() {
+        let today_fajr = $(".time")[0].innerText;
+        var current_date = new Date();
+        var month_index = current_date.getMonth();
+        CURRENT_MONTH = prayerTimes[month_index];
+        var today_magr = $(".time")[3].innerText;
+        let magr_minutes = ((24 - parseInt(today_magr.split(':')[0])) * 60) + parseInt(today_magr.split(':')[1]);
+
+        let fajr_minutes =  (parseInt(today_fajr.split(':')[0]) * 60) + parseInt(today_fajr.split(':')[1]);
+        TODAY_FAJR_MINUTES = fajr_minutes;
+        let minutes = magr_minutes - fajr_minutes;
+        return minutes;
+    }
+
+    function checkIfDay() {
+        var currentTime = new Date();
 
 
+        var today_magr = $(".time")[3].innerText;
+        let hr = parseInt(today_magr.split(':')[0]);
+        let mt = parseInt(today_magr.split(':')[1]);
+
+        let today_fajr = $(".time")[0].innerText;
+        let hr1 = parseInt(today_fajr.split(':')[0]);
+        let mt1 = parseInt(today_fajr.split(':')[1]);
+
+        var compareTime = new Date();
+        compareTime.setHours(hr);
+        compareTime.setMinutes(mt);
+        compareTime.setSeconds(0);
+
+        var compareTime2 = new Date();
+        compareTime2.setHours(hr1);
+        compareTime2.setMinutes(mt1);
+        compareTime2.setSeconds(0);
+
+        // Compare the times
+        if (currentTime.getTime() > compareTime2.getTime() && currentTime.getTime() < compareTime.getTime()) {
+
+            return true;
+        }
+        else {
+
+            return false;
+        }
+    }
+
+    function calculateCurrentPosition() {
+        let isDay = checkIfDay();
+        if(isDay) {
+            let sunCicleMinutes = calculateSunCicle();
+            let frameTime = parseInt(sunCicleMinutes / 315);
+            let currentProgress = CURRENT_MINUTES - TODAY_FAJR_MINUTES;
+            let progress = currentProgress / frameTime;
+            return progress;
+            // day
+            // sun frames: 315
+        }
+        else {
+            let moonCircleMinutes = calculateMoonCicle();
+            let frameTime = parseInt(moonCircleMinutes / 158);
+            let currentProgress = CURRENT_MINUTES - TODAY_MAGR_MINUTES;
+            let progress = currentProgress / frameTime;
+            return progress;
+            // night
+            // moon frames: 158
+        }
+
+    }
+
+    function displaySunOrMoon() {
+        currentAngle = startAngle;
+        let isDay = checkIfDay();
+        let progress = calculateCurrentPosition();
+        if(isDay) {
+            // sun
+
+            currentAngle += (progress * 0.01);
+            var coordinates = calculateCoordinates(centerX, centerY, radius, currentAngle);
+
+            let x = coordinates.x;
+            let y = coordinates.y; // 100 - 50 - 100
+            let y1 = Math.abs((y - 50)) * sun_increment_y;
+            let x1 = Math.abs((x - 50)) * sun_increment_x - 20;
+            sunFrame(x1, y1);
+            $("#moon").addClass("hidden");
+            $("#sun").removeClass("hidden");
+            $(".night").addClass("hidden");
+        }
+        else {
+            // moon
+            currentAngle += (progress * 0.01);
+            var coordinates = calculateCoordinates(centerX, centerY, radius, currentAngle);
+
+            let x = coordinates.x;
+            let y = coordinates.y;
+            let y1 = Math.abs((150 - y)) * moon_increment_y;
+            let x1 = Math.abs((x - 50)) * moon_increment_x - 10;
+            moonFrame(x1, y1);
+            $(".night").removeClass("hidden");
+            $("#sun").addClass("hidden");
+            $("#moon").removeClass("hidden");
+        }
+    }
+
+
+    $(".slider-container").click(function() {
+        if(!$("#settings").hasClass("hidden")) {
+            $("#settings").addClass("hidden");
+        }
+        if(!$("#aboutUs").hasClass("hidden")) {
+            $("#aboutUs").addClass("hidden");
+        }
+        if(!$("#contactUs").hasClass("hidden")) {
+            $("#contactUs").addClass("hidden");
+        }
+    })
+
+    $(".close").click(function() {
+        if(!$("#settings").hasClass("hidden")) {
+            $("#settings").addClass("hidden");
+        }
+        if(!$("#aboutUs").hasClass("hidden")) {
+            $("#aboutUs").addClass("hidden");
+        }
+        if(!$("#contactUs").hasClass("hidden")) {
+            $("#contactUs").addClass("hidden");
+        }
+    })
 
     function calculateCoordinates(centerX, centerY, radius, angle) {
         var x = centerX + radius * Math.cos(angle);
@@ -103,68 +253,101 @@ $(document).ready(function() {
         let moon = $("#moon")[0];
         moon.style.top = y + "%";
         moon.style.left = x + "%";
+        if(x > 85) {
+            $("#moon").addClass("hidden");
+        }
+        else {
+            if($("#moon").hasClass("hidden")) {
+                $("#moon").removeClass("hidden");
+            }
+        }
     }
 
     function sunFrame(x, y) {
-        let moon = $("#sun")[0];
-        moon.style.top = y + "%";
-        moon.style.left = x + "%";
+        let sun = $("#sun")[0];
+        if(x > 76) {
+            $("#sun").addClass("hidden");
+        }
+        else {
+            if($("#sun").hasClass("hidden")) {
+                $("#sun").removeClass("hidden");
+            }
+        }
+        sun.style.top = y + "%";
+        sun.style.left = x + "%";
     }
+
+    var isSun = true;
 
     var test = 0;
     function animateSun() {
+        if(!isSun) {
+            return;
+        }
         var coordinates = calculateCoordinates(centerX, centerY, radius, currentAngle);
         currentAngle += 0.01;
-        let x = coordinates.x; // 50 - 150
+        let x = coordinates.x;
         let y = coordinates.y; // 100 - 50 - 100
-        let y1 = Math.abs((y - 50)) * sun_increment_y; 
+        let y1 = Math.abs((y - 50)) * sun_increment_y;
         let x1 = Math.abs((x - 50)) * sun_increment_x - 20;
         sunFrame(x1, y1);
         test++;
         if (currentAngle <= endAngleSun) {
-            console.log(test);
-            setTimeout(animateSun, 100);
+            setTimeout(animateSun, 500);
         }
         else {
+
             currentAngle = startAngle;
-            $(".night").removeClass("hidden");
-            $("#sun").addClass("hidden");
-            $("#moon").removeClass("hidden");
-            animateMoon();
-        }
-    }
-
-    // animateSun();
-
-    function animateMoon() {
-        var coordinates = calculateCoordinates(centerX, centerY, radius, currentAngle);
-        currentAngle -= 0.01;
-        let x = coordinates.x;
-        let y = coordinates.y;
-        let y1 = Math.abs((150 - y)) * moon_increment_y; 
-        let x1 = Math.abs((x - 50)) * moon_increment_x - 10;
-        moonFrame(x1, y1);
-
-        if (currentAngle >= endAngleMoon) {
-            console.log(x, y);
-            setTimeout(animateMoon, 100);
-        }
-        else {
-            currentAngle = startAngle;
-            $("#moon").addClass("hidden");
-            $("#sun").removeClass("hidden");
-            $(".night").addClass("hidden");
+            
             animateSun();
         }
     }
 
-    $("#settingsIcon").click(function() {
+    animateSun();
+
+    $("#darkTheme").change(function() {
+        currentAngle = startAngle;
+        changeTheme($("#darkTheme")[0].checked);
+    })
+
+    var test2 = 0;
+    function animateMoon() {
+        if(isSun) {
+            return;
+        }
+        var coordinates = calculateCoordinates(centerX, centerY, radius, currentAngle);
+        currentAngle -= 0.01;
+        let x = coordinates.x;
+        let y = coordinates.y;
+        let y1 = Math.abs((150 - y)) * moon_increment_y;
+        let x1 = Math.abs((x - 50)) * moon_increment_x - 10;
+        moonFrame(x1, y1);
+        test2++;
+        if (currentAngle >= endAngleMoon) {
+            setTimeout(animateMoon, 500);
+        }
+        else {
+            currentAngle = startAngle;
+            animateMoon();
+        }
+    }
+
+    $("#settings_btn").click(function(e) {
+        e.stopPropagation();
         $("#settings").toggleClass("hidden");
     })
 
-    $("#aboutUsIcon").click(function() {
+    $("#aboutus_btn").click(function(e) {
+        e.stopPropagation();
         $("#aboutUs").toggleClass("hidden");
     })
+
+    $("#contact_btn").click(function(e) {
+        e.stopPropagation();
+        $("#contactUs").toggleClass("hidden");
+    })
+
+
 
 
     function currentDate() {
@@ -186,7 +369,7 @@ $(document).ready(function() {
         $(".month")[month_index].click();
     }
 
-    
+
 
     function findNextPrayer(today_times) {
         var dt = new Date();
@@ -200,7 +383,7 @@ $(document).ready(function() {
             let mt = today_times[i].split(":")[1];
             let nr = (parseInt(hr) * 60) + (parseInt(mt));
             if(nr > number) {
-                
+
                 index = i;
                 break;
             }
@@ -214,17 +397,44 @@ $(document).ready(function() {
         }
     }
 
+    function changeTheme(isDark) {
+        if(isDark) {
+            isSun = false;
+            $(".prayer").addClass("dark-theme");
+            $(".month").addClass("dark-theme");
+            $(".content").addClass("dark-theme");
+            $(".option").addClass("dark-theme");
+
+            $(".night").removeClass("hidden");
+            $("#sun").addClass("hidden");
+            $("#moon").removeClass("hidden");
+            animateMoon();
+        }
+        else {
+            isSun = true;
+            $(".dark-theme").removeClass("dark-theme");
+
+            $("#moon").addClass("hidden");
+            $("#sun").removeClass("hidden");
+            $(".night").addClass("hidden");
+            animateSun();
+        }
+    }
+
+    var CURRENT_MINUTES = 0;
+
     function countdown(index, today_times) {
         var x = setInterval(function() {
             var dt = new Date();
             let hour = dt.getHours();
             let minutes = dt.getMinutes();
             let number = (parseInt(hour) * 60) + (parseInt(minutes));
+            CURRENT_MINUTES = number;
             let target_div = $(".empty")[index];
             target_div.innerHTML = "";
             target_div.classList.add("target-div");
             let p = document.createElement("p");
-            p.innerText = "Next Prayer In: ";
+            p.innerText = $("#remaining")[0].innerText;
             $(".target-div").append(p);
             let div = document.createElement("DIV");
             let hr = parseInt(today_times[index].split(":")[0]);
@@ -232,7 +442,7 @@ $(document).ready(function() {
             let nr = (parseInt(hr) * 60) + (parseInt(mt));
             let difference = nr - number;
             let seconds = dt.getSeconds();
-            div.innerText = parseInt(difference / 60) + "h " + (difference % 60) + "m " + (60 - seconds) + "s";
+            div.innerText = parseInt(difference / 60) + ":" + (difference % 60) + ":" + (60 - seconds);
             if($(".next-prayer")[0] != undefined) {
                 $(".next-prayer").removeClass("next-prayer");
             }
@@ -243,15 +453,15 @@ $(document).ready(function() {
                 $(".prayer")[index].classList.add("prayer-time");
             }
             else if(nr < number) {
+                $(".prayer")[index].classList.remove("prayer-time");
                 clearInterval(x);
                 findNextPrayer(today_times);
             }
-            
         }, 1000);
     }
 
     $(".month").click(function() {
-        console.log("click");
+
         if(SLIDE_INDEX != 0) {
             showNextSlide();
         }
@@ -263,7 +473,7 @@ $(document).ready(function() {
         let current_date = new Date();
         let month_index = current_date.getMonth();
         let day = -1; // if its not -1 it means we are in current month
-        
+
         if(month_index == index) {
             day = current_date.getDate() - 1;
         }
@@ -272,7 +482,7 @@ $(document).ready(function() {
 
         let table = $("#monthData");
         table.html("");
-        
+
         for(let i = 0; i < month_data.length; i++) {
             let tr = document.createElement("TR");
             if(i == day) {
@@ -290,22 +500,6 @@ $(document).ready(function() {
             table.append(tr);
         }
     })
-
-    // Send data to App Script
-    // fetch(URL).then(function (response) {
-    //         return response.json();
-    //     }).then(function (data) {
-    //         if(data == false) {
-    //             alert("False");
-    //         }
-    //         else {
-    //             DATA = data.data;
-    //             printPrayerTimes();
-    //             //currentDate();
-    //         }
-    //     }).catch(function (error) {
-    //         console.error(error);
-    // });
 
     const prayerTimes = [
         [
@@ -665,7 +859,7 @@ $(document).ready(function() {
             ["06:27"	, "13:15"	, "15:32"	, "17:41"	, "19:06"],
             ["06:28"	, "13:15"	, "15:31"	, "17:41"	, "19:06"],
             ["06:29"	, "13:15"	, "15:30"	, "17:40"	, "19:05"]
-        ], 
+        ],
         [
             ["06:29"	, "13:15"	, "15:29"	, "17:40"	, "19:04"],
             ["06:30"	, "13:15"	, "15:29"	, "17:39"	, "19:03"],
@@ -701,9 +895,56 @@ $(document).ready(function() {
         ]
     ];
 
-    console.log(prayerTimes);
 
+    const translations = [
+        ["Svyaze val", "Contact Us", "Свяжитесь с нами", "კონტაქტი"],
+        ["Shoi xatt hum deleexh, shoi 'eul ili Pankiser baaxarxuasht peidanie xirk der ell xatish derg, txueg kxoudeich xaz xatarg da DevPankisi toobun. <a href='http://devpankisi.com'>DevPankisi</a> c1en hum chu daar xuleexh ili c1en program chu yalar xuleexh DevPanksis web site t1i xirk da shun shie dolu huma'.Txuec svyaze boula ettua:<br> <br> <p><a href='mailto:devpankisi@gmail.com'>Email</a></p><p><a href='https://www.instagram.com/devpankisi/'>Instagram</a></p><p><a href='https://t.me/pankisi_dev_bot'>Telegram</a></p><br><br>Txox lest tiax xa lieih saitieg hous: <a href='http://devpankisi.com'>DevPankisi.com</a>.", "Your feedback matters to us! Connect with us on social media to share your thoughts and suggestions. Stay updated on our projects and reach out to us for any inquiries. Follow us on:<br><br><p><a href='mailto:devpankisi@gmail.com'>Email</a></p><p><a href='https://www.instagram.com/devpankisi/'>Instagram</a></p><p><a href='https://t.me/pankisi_dev_bot'>Telegram</a></p><br>Remember, your input helps us shape a better future for Pankisi. For more information and to explore our portfolio, visit our website: <a href='http://devpankisi.com'>DevPankisi.com</a>.", "Ваше мнение имеет для нас значение! Свяжитесь с нами в социальных сетях, чтобы поделиться своими мыслями и предложениями. Будьте в курсе наших проектов и обращайтесь к нам с любыми вопросами. Подписывайтесь на нас в:<br><br><p><a href='mailto:devpankisi@gmail.com'>Email</a></p><p><a href='https://www.instagram.com/devpankisi/'>Instagram</a></p><p><a href='https://t.me/pankisi_dev_bot'>Telegram</a></p><br>Помните, что ваш вклад помогает нам формировать лучшее будущее для Панкиси. Для получения дополнительной информации и изучения нашего портфолио посетите наш веб-сайт: <a href='http://devpankisi.com'>DevPankisi.com</a>.", "თქვენი აზრი ჩვენთვის მნიშვნელოვანია! დაგვიკავშირდით სოციალურ მედიაში. თვალი ადევნეთ ჩვენს საქმიანობას და გაგვიზიარეთ თქვენი აზრი. გამოგვიწერეთ შემდეგ სოციალურ ქსელებში:<br><br><p><a href='mailto:devpankisi@gmail.com'>Email</a></p><p><a href='https://www.instagram.com/devpankisi/'>Instagram</a></p><p><a href='https://t.me/pankisi_dev_bot'>Telegram</a></p><br>ჩვენს შესახებ მეტი ინფორმაციისთვის გადახედეთ ჩვენი გუნდის ვებსაიტს ვებგვერდზე: <a href='http://devpankisi.com'>DevPankisi.com</a>."],
+        ["T1ikhovla", "Close", "Закрыть", "დახურვა"],
+        ["Xa'am", "Info", "Информация", "ინფორმაცია"],
+        ["Assalamu Aleiqum vezhari, ezhari! Marsh dog1eild shu <b>AzanPankisi</b> chu. shu eggir tueshamie nakxuast, miloxa' laamaz xeenish shug lor eiturg iolush e. Txa program chug1ual cxhennich teipan xalua iocush laamaz xenishk xhous ettua ba shun.", "Welcome to AzanPankisi, your ultimate companion for accessing prayer times in Pankisi. Stay connected with your faith effortlessly!", "Добро пожаловать в <b>AzanPankisi</b>, вашего надежного спутника для отслеживания времени молитв в Панкиси.  Без труда узнавайте время молитв с помощью нашего приложения.", "მოგესალმებით <b>AzanPankisi</b>-ში, პირველი ლოცვის დროების აპლიკაცია პანკისში."],
+        ["Programax lest:", "About App:", "О приложении:", "აპლიკაციის შესახებ"],
+        ["<b>AzanPankisi</b> program yar baxhan der, Pankiser laamaz xeenishk att xhaazheit ettua bar. ", "<b>AzanPankisi</b> is designed to provide easy access to prayer times in Pankisi, catering specifically to the Pankisi community. Never miss a prayer with our intuitive app, ensuring you stay connected to your faith no matter where you are in Pankisi.", "<b>AzanPankisi</b> создан для обеспечения простого доступа к времени молитв в Панкиси, Специально ориентированный на сообщество Панкиси. Никогда не пропускайте молитву с нашим интуитивно понятным приложением, обеспечивая доступ ко времени молитв только в Панкиси.", "<b>AzanPankisi</b> არის აპლიკაცია რომელიც გიმარტივებთ ლოცვის დროების მონიტორინგს პანკისში, არ დააგვიანო არც ერთი ლოცვა სადაც არ უნდა იყო პანკისში."],
+        ["Txox lest", "About Us", "О нас", "ჩვენს შესახებ"],
+        ["Txo <b>DevPankisi</b> oolush Pankiser toob e. Txo veshax kxetar baxhan, Pankiser toobun ieshush programieshcar ili web-saiteshcar human ieshush g1o dar.  Txa toobun iukx1e daaxk1 loocurish: <br> <br> <b>Aslan Borchashvili</b> <br> <b>Shobur Margoev</b> <br> <b>Suleiman Mutoshvili</b> <br> <br>", "We are the DevPankisi team, a group of passionate individuals from Pankisi dedicated to serving our community through technology. Meet our team members:<br>Aslan BorchashviliShobur MargoevSuleiman Mutoshvili", "Мы - команда <b>DevPankisi</b>, группа людей из Панкиси, объединившихся для создания инновационных решений для нашего сообщества. Представляем нашу команду:<br> <br> <b>Аслан Борчашвили</b> <br> <b>Шобур Маргоев</b><br><b>Сулейман Мутошвили</b><br><br>", "ჩვენ ვართ <b>DevPankisi</b>, ახალგაზრდა დეველოპერების გუნდი პანკისიდან, ჩვენი მიზანია წავახალისოთ და ხელი შევუწყოთ პანკისის განვითარებას ტექნოლოგიის საშუალებით, ჩვენი გუნდის წევრები:<br><br> <b>ასლან ბორჩაშვილი</b><br><b>შოობურ მარგოევ</b><br><b>სულეიმან მუთოშვილი</b><br><br>"],
+        ["<b>DevPankisi</b> kxullin xilar baxhan, Pankiser naxag informacie, peida' ieceiturg bolush iolu saitesht, programisht 1alazhua erg iolush kxullin e.<b>DevPankisi</b> t1i yaa ezish iol xeen chu kxi dukxa' hum da 'eul iolush e.", "At <b>DevPankisi</b>, we specialize in developing apps and websites tailored to the unique needs of the Pankisi community. Our mission is to enhance accessibility, connectivity, and convenience for everyone in our community. With <b>AzanPankisi</b> as our first offering, we're committed to creating more innovative solutions to empower and uplift Pankisi.", "В <b>DevPankisi</b> мы специализируемся на разработке приложений и веб-сайтов, адаптированных под уникальные потребности сообщества Панкиси. Наша миссия - повышение доступности, связанности и удобства для каждого в нашем сообществе. Начиная с <b>AzanPankisi</b>, нашего первого проекта, мы готовы создавать более инновационные решения для укрепления и подъема Панкиси.", "<b>DevPankisi</b>-ში ჩვენი მთავარი მიზანია ჩვენი ხალხის უნიკალურ საჭიროებებზე მორგებული აპლიკაციების შექმნა და განვითარება."],
+        ["T1ikhovla", "Close", "Закрыть", "დახურვა"],
+        ["Kuertara", "General", "Общее", "ზოგადი"],
+        ["Kxuelan buas", "Dark Theme", "Темная тема", "მუქი ფერები"],
+        ["Dagvakxar", "Notifications", "Уведомления", "შეტყობინებები"],
+        ["Lamazan xann dag vakxar", "Notify on prayer time:", "Уведомлять о времени молитвы", "შეტყობინება ლოცვის დროს"],
+        ["Tatanс dagvakxar:", "Play sound:", "Воспроизвести звук", "ხმის შეტყობინება"],
+        ["5 min. xhalxox dag vakxar", "Notify 5 minutes advance:", "Уведомить за 5 минут", "შეტყობინება 5 წუთით ადრე"],
+        ["T1ikhovla", "Close", "Закрыть", "დახურვა"],
+        ["1yira ", "Fajr", "Утренняя (fajr)", "დილის (fajr)"],
+        ["Delkx1a", "Zuhr", "Полуденная (zuhr)", "შუადღის (asr)"],
+        ["Malx-buzar", "Asr", "Послеполу-ая (asr)", "მზის ჩასვლის (asr)"],
+        ["Mergish", "Maghrib", "Закатная (magrib)", "დაბინდების (magrib)"],
+        ["Pxhuer", "Isha", "Ночная (isha)", "ღამის (isha)"],
+        ["Taxan-laar Shie dol lamaz dina della.", " all prayers for today are done!", "Все молитвы на сегодня завершены!", "დღეისთვის ყველა ლოცვა შესრულებულია!"],
+        ["Kxollaman", "January", "Январь", "იანვარი"],
+        ["Chillan", "February", "Февраль", "თებერვალი"],
+        ["Bekarg", "March", "Март", "მარტი"],
+        ["Oxanan", "April", "Апрель", "აპრილი"],
+        ["Hutosurg", "May", "Май", "მაისი"],
+        ["Asaran", "June", "Июнь", "ივნისი"],
+        ["Mangalan", "July", "Июль", "ივლისი"],
+        ["Xhettan", "August", "Август", "აგვისტო"],
+        ["Tovbecan", "September", "Сентябрь", "სექტემბერი"],
+        ["Esaran", "October", "Октябрь", "ოქტომბერი"],
+        ["Laxhanan", "November", "Ноябрь", "ნოემბერი"],
+        ["G1uran", "December", "Декабрь", "დეკემბერი"],
+        ["de", "day", "день", "დღე"],
+        ["1yira ", "Fajr", "Фаджр", "დილის"],
+        ["Delkx1a", "Zuhr", "Зухр", "შუადღის"],
+        ["Malx-buzar", "Asr", "Аср", "საღამოს"],
+        ["Mergish", "Maghr", "Магриб", "მზის ჩასვლის"],
+        ["Pxhuer", "Isha", "Иша", "ღამის"],
+        ["Xiicamish", "Settings", "Настройки", "პარამეტრები"],
+        ["Txox lest", "About Us", "О нас", "ჩვენს შესახებ"],
+        ["Svyaze val", "Contact Us", "Свяжитесь с нами", "კონტაქტი"],
+        ["ISAN KHA: ", "REMAINING: ", "Оставшееся:", "დარჩენილია"]
+    ];
 
     currentDate();
-    calculateMoonCicle();
+    // displaySunOrMoon();
 })
