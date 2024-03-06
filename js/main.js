@@ -23,6 +23,15 @@ $(document).ready(function() {
 
     var sun_increment_x = 1.1;
     var sun_increment_y = 0.7;
+
+    var Settings = {
+        lan: 0,
+        dark: 1,
+        notify: 1,
+        sound: 0,
+        notifyBefore: 0
+    }
+
     const minimalSwipeDistance = 50;
 
     var PrayerTimer = 5;
@@ -350,13 +359,23 @@ $(document).ready(function() {
 
 
 
-    function currentDate() {
+    function currentDate(lan) {
         var current_date = new Date();
         var month_index = current_date.getMonth();
         CURRENT_MONTH = prayerTimes[month_index];
         var current_day = current_date.getDate() - 1;
         var today_times = CURRENT_MONTH[current_day];
         var times = $(".time");
+
+        var options = {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        };
+
+        $("#date")[0].innerText = current_date.toLocaleDateString(lan, options);
+
         for(let i = 0; i < 5; i++) {
             times[i].innerText = today_times[i];
         }
@@ -376,7 +395,6 @@ $(document).ready(function() {
         let hour = dt.getHours();
         let minutes = dt.getMinutes();
         let number = (parseInt(hour) * 60) + (parseInt(minutes));
-
         let index = -1;
         for(let i = 0; i < 5; i++) {
             let hr = today_times[i].split(":")[0];
@@ -458,6 +476,81 @@ $(document).ready(function() {
                 findNextPrayer(today_times);
             }
         }, 1000);
+    }
+
+
+
+
+// settings
+
+    
+
+
+    $("#lan").change(function() {
+        changeSettings();
+    });
+
+    $("#darkTheme").change(function() {
+        changeSettings();
+    });
+
+    $("#prayerOn").change(function() {
+        changeSettings();
+    });
+
+    $("#SoundOn").change(function() {
+        changeSettings();
+    });
+
+    $("#beforePrayerOn").change(function() {
+        changeSettings();
+    });
+
+    
+    
+
+    function changeSettings() {
+        var settings = {
+            lan: $("#lan")[0].value,
+            dark_theme: $("#darkTheme")[0].checked,
+            notify: $("#prayerOn")[0].checked,
+            sound: $("#SoundOn")[0].checked,
+            notifyBefore: $("#beforePrayerOn")[0].checked
+        }
+        saveSettings(settings);
+    }
+
+
+    // Function to retrieve settings from localStorage
+    function getSettings() {
+        var settingsJSON = localStorage.getItem('settings');
+        return settingsJSON ? JSON.parse(settingsJSON) : null;
+    }
+
+    // Function to save settings to localStorage
+    function saveSettings(updatedSettings) {
+        localStorage.setItem('settings', JSON.stringify(updatedSettings));
+    }
+
+    var LAN_SHORT_NAMES = ["RU", "EN", "RU", "GE"];
+
+    // Function to apply settings to the app UI
+    function applySettings(settings) {
+        var savedSettings = getSettings();
+        if(savedSettings != null) {
+            changeTheme(savedSettings.dark_theme);
+            changeLanguage(savedSettings.lan);
+            $("#lan")[0].value = savedSettings.lan;
+            $("#darkTheme")[0].checked = savedSettings.dark_theme;
+            currentDate(LAN_SHORT_NAMES[savedSettings.lan]);
+        }
+        else {
+            // default settings
+            changeTheme(1);
+            $("#darkTheme")[0].checked = true;
+            changeLanguage(3);
+            currentDate("EN");
+        }
     }
 
     $(".month").click(function() {
@@ -895,7 +988,6 @@ $(document).ready(function() {
         ]
     ];
 
-
     const translations = [
         ["Svyaze val", "Contact Us", "Свяжитесь с нами", "კონტაქტი"],
         ["Shoi xatt hum deleexh, shoi 'eul ili Pankiser baaxarxuasht peidanie xirk der ell xatish derg, txueg kxoudeich xaz xatarg da DevPankisi toobun. <a href='http://devpankisi.com'>DevPankisi</a> c1en hum chu daar xuleexh ili c1en program chu yalar xuleexh DevPanksis web site t1i xirk da shun shie dolu huma'.Txuec svyaze boula ettua:<br> <br> <p><a href='mailto:devpankisi@gmail.com'>Email</a></p><p><a href='https://www.instagram.com/devpankisi/'>Instagram</a></p><p><a href='https://t.me/pankisi_dev_bot'>Telegram</a></p><br><br>Txox lest tiax xa lieih saitieg hous: <a href='http://devpankisi.com'>DevPankisi.com</a>.", "Your feedback matters to us! Connect with us on social media to share your thoughts and suggestions. Stay updated on our projects and reach out to us for any inquiries. Follow us on:<br><br><p><a href='mailto:devpankisi@gmail.com'>Email</a></p><p><a href='https://www.instagram.com/devpankisi/'>Instagram</a></p><p><a href='https://t.me/pankisi_dev_bot'>Telegram</a></p><br>Remember, your input helps us shape a better future for Pankisi. For more information and to explore our portfolio, visit our website: <a href='http://devpankisi.com'>DevPankisi.com</a>.", "Ваше мнение имеет для нас значение! Свяжитесь с нами в социальных сетях, чтобы поделиться своими мыслями и предложениями. Будьте в курсе наших проектов и обращайтесь к нам с любыми вопросами. Подписывайтесь на нас в:<br><br><p><a href='mailto:devpankisi@gmail.com'>Email</a></p><p><a href='https://www.instagram.com/devpankisi/'>Instagram</a></p><p><a href='https://t.me/pankisi_dev_bot'>Telegram</a></p><br>Помните, что ваш вклад помогает нам формировать лучшее будущее для Панкиси. Для получения дополнительной информации и изучения нашего портфолио посетите наш веб-сайт: <a href='http://devpankisi.com'>DevPankisi.com</a>.", "თქვენი აზრი ჩვენთვის მნიშვნელოვანია! დაგვიკავშირდით სოციალურ მედიაში. თვალი ადევნეთ ჩვენს საქმიანობას და გაგვიზიარეთ თქვენი აზრი. გამოგვიწერეთ შემდეგ სოციალურ ქსელებში:<br><br><p><a href='mailto:devpankisi@gmail.com'>Email</a></p><p><a href='https://www.instagram.com/devpankisi/'>Instagram</a></p><p><a href='https://t.me/pankisi_dev_bot'>Telegram</a></p><br>ჩვენს შესახებ მეტი ინფორმაციისთვის გადახედეთ ჩვენი გუნდის ვებსაიტს ვებგვერდზე: <a href='http://devpankisi.com'>DevPankisi.com</a>."],
@@ -915,12 +1007,12 @@ $(document).ready(function() {
         ["Tatanс dagvakxar:", "Play sound:", "Воспроизвести звук", "ხმის შეტყობინება"],
         ["5 min. xhalxox dag vakxar", "Notify 5 minutes advance:", "Уведомить за 5 минут", "შეტყობინება 5 წუთით ადრე"],
         ["T1ikhovla", "Close", "Закрыть", "დახურვა"],
-        ["1yira ", "Fajr", "Утренняя (fajr)", "დილის (fajr)"],
-        ["Delkx1a", "Zuhr", "Полуденная (zuhr)", "შუადღის (asr)"],
-        ["Malx-buzar", "Asr", "Послеполу-ая (asr)", "მზის ჩასვლის (asr)"],
-        ["Mergish", "Maghrib", "Закатная (magrib)", "დაბინდების (magrib)"],
-        ["Pxhuer", "Isha", "Ночная (isha)", "ღამის (isha)"],
-        ["Taxan-laar Shie dol lamaz dina della.", " all prayers for today are done!", "Все молитвы на сегодня завершены!", "დღეისთვის ყველა ლოცვა შესრულებულია!"],
+        ["1yira ", "Fajr", "Фаджр", "დილის"],
+        ["Delkx1a", "Zuhr", "Зухр", "შუადღის"],
+        ["Malx-buzar", "Asr", "Аср", "მზის ჩასვლის"],
+        ["Mergish", "Maghrib", "Магриб", "დაბინდების"],
+        ["Pxhuer", "Isha", "Иша", "ღამის"],
+        ["Taxan-laar mos lamazan kha iella.", "All prayer times for today are done!", "Все молитвы на сегодня завершены!", "დღეისთვის ყველა ლოცვის დრო შესრულებულია!"],
         ["Kxollaman", "January", "Январь", "იანვარი"],
         ["Chillan", "February", "Февраль", "თებერვალი"],
         ["Bekarg", "March", "Март", "მარტი"],
@@ -934,17 +1026,17 @@ $(document).ready(function() {
         ["Laxhanan", "November", "Ноябрь", "ნოემბერი"],
         ["G1uran", "December", "Декабрь", "დეკემბერი"],
         ["de", "day", "день", "დღე"],
-        ["1yira ", "Fajr", "Фаджр", "დილის"],
-        ["Delkx1a", "Zuhr", "Зухр", "შუადღის"],
-        ["Malx-buzar", "Asr", "Аср", "საღამოს"],
+        ["1'uyra", "Fajr", "Фаджр", "დილის"],
+        ["Dielk'1a", "Zuhr", "Зухр", "შუადღის"],
+        ["Malkhbuzar", "Asr", "Аср", "საღამოს"],
         ["Mergish", "Maghr", "Магриб", "მზის ჩასვლის"],
-        ["Pxhuer", "Isha", "Иша", "ღამის"],
+        ["Ph'uer", "Isha", "Иша", "ღამის"],
         ["Xiicamish", "Settings", "Настройки", "პარამეტრები"],
         ["Txox lest", "About Us", "О нас", "ჩვენს შესახებ"],
         ["Svyaze val", "Contact Us", "Свяжитесь с нами", "კონტაქტი"],
         ["ISAN KHA: ", "REMAINING: ", "Оставшееся:", "დარჩენილია"]
     ];
 
-    currentDate();
     // displaySunOrMoon();
+    applySettings();
 })

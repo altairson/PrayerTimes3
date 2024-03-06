@@ -6,8 +6,8 @@ const filesToCache = [
   'index.html',
   'css/main.css',
   'js/main.js',
+  'settings.json',
   'jquery/jquery.min.js',
-  'media/mosque_croped.png',
   'manifest.json'
 ];
 
