@@ -13,9 +13,9 @@
 <div class="night hidden"></div>
 
 <div id="contactUs" class="hidden">
-    <h1 class="text">Contact Us</h1>
+    <h1 class="contact_us">Contact Us</h1>
     <div class="subset">
-        <div class="set-content text">
+        <div class="set-content contact_us_text">
             <p>Your feedback matters to us! Connect with us on social media to share your thoughts and suggestions. Stay updated on our projects and reach out to us for any inquiries. Follow us on:</p>
             <br>
             <p><a href="mailto:devpankisi@gmail.com">Email</a></p>
@@ -26,34 +26,50 @@
         </div>
     </div>
     <div class="close-btn">
-        <button class="close text">close</button>
+        <button class="close">close</button>
+    </div>
+</div>
+
+<div id="feedback" class="hidden">
+    <h1 class="feedback">Feedback</h1>
+    <div class="subset">
+        <div class="set-content feedback_text">
+            <p>Thank you for taking the time to test our prayer times app. Your feedback is invaluable to us as we strive to create the best possible experience for our users. Please follow the link to send us your feedback <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7n68tRdQ5x816MKp_uVPNAbnhAJkuHxpb5lj3dY4dupasJg/viewform?usp=sf_link">Feedback form</a>   or you can send it to our telegram bot: <a href="https://t.me/pankisi_dev_bot">Telegram Bot</a></p>
+            <br>
+            <p><a href="https://docs.google.com/forms/d/e/1FAIpQLSd7n68tRdQ5x816MKp_uVPNAbnhAJkuHxpb5lj3dY4dupasJg/viewform?usp=sf_link">Feedback Form</a></p>
+            <p><a href="https://t.me/pankisi_dev_bot">Telegram bot</a></p>
+            <br>
+        </div>
+    </div>
+    <div class="close-btn">
+        <button class="close">close</button>
     </div>
 </div>
 
 
 <div id="aboutUs" class="hidden">
-    <h1 class="text">Info</h1>
+    <h1 class="info">Info</h1>
     <div class="subset">
-        <div class="set-content text">
+        <div class="set-content welcome_message">
             Welcome to <b>AzanPankisi</b>, your ultimate companion for accessing prayer times in Pankisi. Stay connected with your faith effortlessly!
         </div>
     </div>
     <div class="subset">
-        <h2 class="headline text">
+        <h2 class="headline about_app">
             About App
         </h2>
-        <div class="set-content text">
+        <div class="set-content about_app_text">
             <b>AzanPankisi</b> is designed to provide easy access to prayer times in Pankisi, catering specifically to the Islamic community. Never miss a prayer with our intuitive app, ensuring you stay connected to your faith no matter where you are.
         </div>
     </div>
     <div class="subset">
-        <h2 class="headline text">
+        <h2 class="headline about_us">
             About us
         </h2>
         <div class="icon">
 
         </div>
-        <div class="set-content text">
+        <div class="set-content about_us_text">
             <p>We are the <b>DevPankisi</b> team, a group of passionate individuals from Pankisi dedicated to serving our community through technology. Meet our team members:</p>
             <br>
             <p>Aslan Borchashvili</p>
@@ -61,24 +77,24 @@
             <p>Suleiman Mutoshvili</p>
             <br>
         </div>
-        <div class="set-content text">
+        <div class="set-content about_team">
             At <b>DevPankisi</b> we specialize in developing apps and websites tailored to the unique needs of the Pankisi community. Our mission is to enhance accessibility, connectivity, and convenience for everyone in our community. With AzanPankisi as our first offering, we're committed to creating more innovative solutions to empower and uplift Pankisi.
         </div>
     </div>
     <div class="close-btn">
-        <button class="close text">close</button>
+        <button class="close">close</button>
     </div>
 </div>
 <div id="settings" class="hidden">
-    <h1>Settings</h1>
+    <h1 class="settings">Settings</h1>
     <div class="set-main">
         <div class="subset">
-            <h2 class="headline text">
+            <h2 class="headline general">
                 General
             </h2>
             <div class="set-content">
                 <div class="set">
-                    <div class="key">language</div>
+                    <div class="key language">language</div>
                     <div class="value">
                         <select name="" id="lan">
                             <option class="" value="0">Qisti</option>
@@ -89,7 +105,7 @@
                     </div>
                 </div>
                 <div class="set">
-                    <div class="key text">Dark theme</div>
+                    <div class="key dark_theme">Dark theme</div>
                     <div class="value">
                         <input type="checkbox" name="" id="darkTheme">
                     </div>
@@ -98,42 +114,43 @@
         </div>
 
         <div class="subset">
-            <h2 class="headline text">
+            <h2 class="headline notifications">
                 Notifications
             </h2>
             <div class="set-content">
                 <div class="set">
-                    <div class="key text">Notify When prayer time</div>
+                    <div class="key notify_on_prayer">Notify When prayer time</div>
                     <div class="value">
                         <input type="checkbox" name="" id="prayerOn">
                     </div>
                 </div>
                 <div class="set">
-                    <div class="key text">Play sound</div>
+                    <div class="key notify_with_sound">Play sound</div>
                     <div class="value">
                         <input type="checkbox" name="" id="SoundOn">
                     </div>
                 </div>
                 <div class="set">
-                    <div class="key text">notify 5 minutes before prayer</div>
+                    <div class="key notify_5_min_advance">notify 5 minutes before prayer</div>
                     <div class="value">
                         <input type="checkbox" name="" id="beforePrayerOn">
                     </div>
                 </div>
                 <div class="set">
-                    <i style="color: red;">*these settings are not working at the moment, we are working on it and will be included in next update!</i>
+                    <i class="note" style="color: red;">*these settings are not working at the moment, we are working on it and will be included in next update!</i>
                 </div>
             </div>
         </div>
     </div>
     <div class="close-btn">
-        <button class="close text">close</button>
+        <button class="close">close</button>
     </div>
 </div>
 <div id="moon" class="hidden"></div>
 <div id="sun"></div>
 <div class="slider-container">
     <div id="today" class="slide">
+        
         <div id="date">
             
         </div>
@@ -147,7 +164,7 @@
                         <img class="ornament bottom-right" src="./media/ornament2.png" alt="">
                         <div class="inner-border">
                             <div class="div">
-                                <div class="name text">Fajr</div>
+                                <div class="name fajr">Fajr</div>
                                 <div class="time"></div>
                             </div>
                             <div class="empty"></div>
@@ -164,7 +181,7 @@
                         <img class="ornament bottom-right" src="./media/ornament2.png" alt="">
                         <div class="inner-border">
                             <div class="div">
-                                <div class="name text">Zuhr</div>
+                                <div class="name zuhr">Zuhr</div>
                                 <div class="time"></div>
                             </div>
                             <div class="empty"></div>
@@ -181,7 +198,7 @@
                         <img class="ornament bottom-right" src="./media/ornament2.png" alt="">
                         <div class="inner-border">
                             <div class="div">
-                                <div class="name text">Asr</div>
+                                <div class="name asr">Asr</div>
                                 <div class="time"></div>
                             </div>
                             <div class="empty"></div>
@@ -198,7 +215,7 @@
                         <img class="ornament bottom-right" src="./media/ornament2.png" alt="">
                         <div class="inner-border">
                             <div class="div">
-                                <div class="name text">Maghr</div>
+                                <div class="name magrib">Maghr</div>
                                 <div class="time"></div>
                             </div>
                             <div class="empty"></div>
@@ -215,7 +232,7 @@
                         <img class="ornament bottom-right" src="./media/ornament2.png" alt="">
                         <div class="inner-border">
                             <div class="div">
-                                <div class="name text">Isha</div>
+                                <div class="name isha">Isha</div>
                                 <div class="time"></div>
                             </div>
                             <div class="empty"></div>
@@ -223,25 +240,9 @@
                     </div>
                 </div>
             </div>
-            <div id="note" class="hidden text">
+            <div id="note" class="hidden all_prayer_times_passed">
                 all prayers for today are done!
             </div>
-        </div>
-    </div>
-    <div id="year" class="slide">
-        <div id="main">
-            <div id="jan" class="month text">January</div>
-            <div id="feb" class="month text">February</div>
-            <div id="mar" class="month text">March</div>
-            <div id="apr" class="month text">April</div>
-            <div id="may" class="month text">May</div>
-            <div id="jun" class="month text">June</div>
-            <div id="jul" class="month text">July</div>
-            <div id="aug" class="month text">August</div>
-            <div id="sep" class="month text">September</div>
-            <div id="oct" class="month text">October</div>
-            <div id="nov" class="month text">November</div>
-            <div id="dec" class="month text">December</div>
         </div>
     </div>
     <div class="slide">
@@ -253,12 +254,12 @@
                 <table id="table">
                     <thead>
                     <tr>
-                        <th class="text">day</th>
-                        <th class="text">fajr</th>
-                        <th class="text">zuhr</th>
-                        <th class="text">asr</th>
-                        <th class="text">maghr</th>
-                        <th class="text">isha</th>
+                        <th class="day">day</th>
+                        <th class="fajr">fajr</th>
+                        <th class="zuhr">zuhr</th>
+                        <th class="asr">asr</th>
+                        <th class="magrib">maghr</th>
+                        <th class="isha">isha</th>
                     </tr>
                     </thead>
                     <tbody id="monthData">
@@ -268,11 +269,28 @@
             </div>
         </div>
     </div>
+    <div id="year" class="slide">
+        <div id="main">
+            <div id="jan" class="month january">January</div>
+            <div id="feb" class="month february">February</div>
+            <div id="mar" class="month march">March</div>
+            <div id="apr" class="month april">April</div>
+            <div id="may" class="month may">May</div>
+            <div id="jun" class="month june">June</div>
+            <div id="jul" class="month july">July</div>
+            <div id="aug" class="month august">August</div>
+            <div id="sep" class="month september">September</div>
+            <div id="oct" class="month october">October</div>
+            <div id="nov" class="month november">November</div>
+            <div id="dec" class="month december">December</div>
+        </div>
+    </div>
     <div id="other" class="slide">
         <div class="options">
-            <div id="settings_btn" class="option text">Settings</div>
-            <div id="aboutus_btn" class="option text">About Us</div>
-            <div id="contact_btn" class="option text">Contact Us</div>
+            <div id="settings_btn" class="option settings">Settings</div>
+            <div id="aboutus_btn" class="option about_us">About Us</div>
+            <div id="contact_btn" class="option contact_us">Contact Us</div>
+            <div id="feedback_btn" class="option feedback">Feedback</div>
         </div>
     </div>
 </div>
@@ -287,7 +305,7 @@
     <button class="prev">></button>
 </div>
 <div class="hidden">
-    <div id="remaining" class="text">REMAINING</div>
+    <div id="remaining" class="remaining">REMAINING</div>
 </div>
 <script>
         if ('serviceWorker' in navigator) {
