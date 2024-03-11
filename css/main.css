@@ -80,7 +80,7 @@
 
 .ornament {
     position: absolute;
-    width: 40px;
+    width: 25px;
     z-index: 2;
 }
 
@@ -506,7 +506,7 @@ b {
     align-items: center;
     border-radius: 3px;
     margin-bottom: 20px;
-    height: 99px;
+    height: 75px;
     background-color: #ffffffbd;
 }
 
@@ -561,7 +561,7 @@ b {
 
 .next-prayer {
     box-shadow: 0px 0px 10px 5px greenyellow;
-    height: 140px !important;
+    height: 120px !important;
 }
 
 
