@@ -10,9 +10,15 @@ $(document).ready(function() {
 
     var CURRENT_MONTH = [];
 
+
     var SLIDE_INDEX = 0;
     var SLIDES = $(".slide");
     var TOTAL_SLIDES = SLIDES.length;
+
+    var DAY_INDEX = 1;
+    var DAYS = $(".ver-slide");
+    var TOTAL_DAYS = DAYS.length;
+
     var centerX = 100;
     var centerY = 100;
     var radius = 50;
@@ -42,6 +48,45 @@ $(document).ready(function() {
 
     SLIDES[SLIDE_INDEX].classList.add("active-slide");
 
+    DAYS[DAY_INDEX].classList.add("active-day");
+
+    // slide days
+    function showNextDay() {
+        if(DAY_INDEX >= 2) {
+            return;
+        }
+        DAYS[DAY_INDEX].classList.remove("active-day");
+        $(".day-indicator")[DAY_INDEX].classList.remove("day-active");
+        if(DAY_INDEX == 2) {
+            $(".day-next")[0].dissabled = true;
+        }
+        else {
+            DAY_INDEX = DAY_INDEX + 1;
+        }
+        DAYS[DAY_INDEX].classList.add("active-day");
+        $(".day-indicator")[DAY_INDEX].classList.add("day-active");
+    }
+
+
+    function showPreviousDay() {
+        if(DAY_INDEX <= 0) {
+            return;
+        }
+        DAYS[DAY_INDEX].classList.remove("active-day");
+        $(".day-indicator")[DAY_INDEX].classList.remove("day-active");
+        
+        if(DAY_INDEX == 0) {
+            $(".day-prev")[0].dissabled = true;
+        } 
+        else {
+            DAY_INDEX = DAY_INDEX - 1;
+        }
+        DAYS[DAY_INDEX].classList.add("active-day");
+        $(".day-indicator")[DAY_INDEX].classList.add("day-active");
+    }
+
+
+
     function showNextSlide() {
         $(".close").click();
         SLIDES[SLIDE_INDEX].classList.remove("active-slide");
@@ -60,6 +105,17 @@ $(document).ready(function() {
         $(".indicator")[SLIDE_INDEX].classList.add("active");
     }
 
+    
+
+    $('.day-prev').click(function() {
+        showPreviousDay();
+    });
+
+    $('.day-next').click(function() {
+        showNextDay();
+    });
+
+    
     $('.next').click(function() {
         showPreviousSlide();
     });
@@ -72,25 +128,43 @@ $(document).ready(function() {
     var touchstartX = 0;
     var touchendX = 0;
 
+    // Swipe gesture handling top-bottom
+    var touchstartY = 0;
+    var touchendY = 0;
+
     document.querySelector('.slider-container').addEventListener('touchstart', function(event) {
         touchstartX = event.changedTouches[0].screenX;
+        touchstartY = event.changedTouches[0].screenY;
     }, false);
 
     document.querySelector('.slider-container').addEventListener('touchend', function(event) {
         touchendX = event.changedTouches[0].screenX;
+        touchendY = event.changedTouches[0].screenY;
         handleGesture();
     }, false);
 
     function handleGesture() {
-        var distance = touchendX - touchstartX;
-        if (Math.abs(distance) > minimalSwipeDistance) {
-        if (touchendX < touchstartX) {
-            // Swiped left
-            showNextSlide();
-        } else {
-            // Swiped right
-            showPreviousSlide();
+        var distanceX = touchendX - touchstartX;
+        var distanceY = touchendY - touchstartY;
+        if(Math.abs(distanceY) > minimalSwipeDistance) {
+            if (touchendY < touchstartY) {
+                // Swiped top
+                showNextDay();
+            } 
+            else {
+                // Swiped bottom
+                showPreviousDay();
+            }
         }
+        if (Math.abs(distanceX) > minimalSwipeDistance) {
+            if (touchendX < touchstartX) {
+                // Swiped left
+                showNextSlide();
+            } 
+            else {
+                // Swiped right
+                showPreviousSlide();
+            }
         }
     }
 
@@ -335,7 +409,7 @@ $(document).ready(function() {
         }
     }
 
-    animateSun();
+    // animateSun();
 
     $("#darkTheme").change(function() {
         currentAngle = startAngle;
@@ -384,28 +458,17 @@ $(document).ready(function() {
         $("#feedback").toggleClass("hidden");
     })
 
-    function currentDate(lan) {
-        var current_date = new Date();
-        var month_index = current_date.getMonth();
-        CURRENT_MONTH = prayerTimes[month_index];
-        var current_day = current_date.getDate() - 1;
-        var today_times = CURRENT_MONTH[current_day];
-        var times = $(".time");
-
-        let day_index = current_date.getDay();
+    function getDateName(day_index, month_index, current_day, index) {
+        day_index = day_index + index;
+        current_day = current_day + index;
         let day_key = WEEK_DAYS[day_index];
         let month_key = MONTHS[month_index];
+
         let day_translation = translations.find(obj => obj.hasOwnProperty(day_key))[day_key][CURRENT_LANGUAGE];
         
         let month_translation = translations.find(obj => obj.hasOwnProperty(month_key))[month_key][CURRENT_LANGUAGE];
-        CURRENT_MONTH_TRANSLATION = month_key;
 
-        var options = {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        };
+        // CURRENT_MONTH_TRANSLATION = month_key;
 
         let p = document.createElement("P");
         p.innerText = day_translation;
@@ -425,15 +488,38 @@ $(document).ready(function() {
         div.append(p2);
         div.append(p1);
 
-        $("#date").append(p);
-        $("#date").append(div);
+        $(".date")[index].append(p);
+        $(".date")[index].append(div);
+    }
 
-
-        for(let i = 0; i < 5; i++) {
-            times[i].innerText = today_times[i];
+    function printDayDates(day_index, month_index, current_day) {
+        for(let i = 0; i < 3; i++) {
+            getDateName(day_index, month_index, current_day, i);
         }
+    }
 
-        findNextPrayer(today_times);
+    function currentDate(lan) {
+        var current_date = new Date();
+        var month_index = current_date.getMonth();
+        CURRENT_MONTH = prayerTimes[month_index];
+        var today = (current_date.getDate() - 1);
+        var today_times = CURRENT_MONTH[current_day];
+        var times = $(".time");
+        let day_index = current_date.getDay();
+        printDayDates(day_index - 2, month_index, today - 1);
+        
+        
+        for(let j = 0; j < 3; j++) {
+            var current_day = (current_date.getDate() - 2) + j;
+            var today_times = CURRENT_MONTH[current_day];
+            if(j == 1) {
+                findNextPrayer(today_times);
+            }
+            for(let i = 0; i < 5; i++) {
+                times[j * 5 + i].innerText = today_times[i];
+            }
+        }
+        
         if($(".current-month")[0] != undefined) {
             $(".current-month").removeClass("current-month");
         }
@@ -479,7 +565,7 @@ $(document).ready(function() {
             $(".night").removeClass("hidden");
             $("#sun").addClass("hidden");
             $("#moon").removeClass("hidden");
-            animateMoon();
+            // animateMoon();
         }
         else {
             isSun = true;
@@ -488,7 +574,7 @@ $(document).ready(function() {
             $("#moon").addClass("hidden");
             $("#sun").removeClass("hidden");
             $(".night").addClass("hidden");
-            animateSun();
+            // animateSun();
         }
     }
 
@@ -501,7 +587,7 @@ $(document).ready(function() {
             let minutes = dt.getMinutes();
             let number = (parseInt(hour) * 60) + (parseInt(minutes));
             CURRENT_MINUTES = number;
-            let target_div = $(".empty")[index];
+            let target_div = $(".empty")[index + 5];
             target_div.innerHTML = "";
             target_div.classList.add("target-div");
             let p = document.createElement("p");
@@ -517,14 +603,14 @@ $(document).ready(function() {
             if($(".next-prayer")[0] != undefined) {
                 $(".next-prayer").removeClass("next-prayer");
             }
-            $(".prayer")[index].classList.add("next-prayer");
+            $(".prayer")[index + 5].classList.add("next-prayer");
             $(".target-div").append(div);
             if(nr <= number && ((number - nr) <= PrayerTimer)) {
                 // 5 minutes
-                $(".prayer")[index].classList.add("prayer-time");
+                $(".prayer")[index + 5].classList.add("prayer-time");
             }
             else if(nr < number) {
-                $(".prayer")[index].classList.remove("prayer-time");
+                $(".prayer")[index + 5].classList.remove("prayer-time");
                 clearInterval(x);
                 findNextPrayer(today_times);
             }

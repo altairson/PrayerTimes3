@@ -5,6 +5,58 @@
     font-family:monospace;
 }
 
+.day-navigation {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    height: fit-content;
+    width: fit-content;
+    padding: 10px;
+    z-index: 10;
+}
+
+.day-indicators {
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 0px;
+}
+
+.day-indicator {
+    width: 10px;
+    height: 10px;
+    border: 1px solid white;
+    border-radius: 50%;
+    margin: 5px 0px;
+}
+
+.day-navigation button {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-family: cursive;
+    background-color: rgba(255, 255, 255, 0.76);
+    border: none;
+    border-radius: 5px;
+}
+
+.day-active {
+    background-color: white;
+}
+
+.day-current {
+    border: 1px solid greenyellow;
+}
+
 
 
 .outer-border {
@@ -489,9 +541,8 @@ b {
 }
 
 #day {
-    height: calc(100% - 60px);
+    height: 100%;
     width: 100%;
-    display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
@@ -505,8 +556,7 @@ b {
     justify-content: center;
     align-items: center;
     border-radius: 3px;
-    margin-bottom: 20px;
-    height: 14%;
+    height: 13%;
     background-color: #ffffffbd;
 }
 
@@ -550,22 +600,18 @@ b {
 
 #note {
     display: flex;
-    height: 30px;
-    padding: 10px 0px;
+    padding: 0px 0px 5px 0px;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     color: white;
     font-weight: bold;
-    text-shadow: 1px 1px 5px black;
 }
 
 .next-prayer {
     box-shadow: 0px 0px 10px 5px greenyellow;
     height: 120px !important;
 }
-
-
 
 .slider-container {
     width: 100%;
@@ -590,6 +636,94 @@ b {
     display: flex;
   }
 
+
+  .path {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+    width: 100%;
+  }
+
+  .path-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .arrow {
+    width: 4px;
+    height: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+.arrow-top .l-left {
+    height: 25%;
+    border: 1px solid rgba(255, 255, 255, 0.534);
+    width: 1px;
+    transform: rotate(45deg);
+    position: relative;
+    left: -12%;
+    top: -38%;
+}
+
+.arrow-top .m-line {
+    border: 1px solid rgba(255, 255, 255, 0.534);
+    width: 1px;
+    height: 100%;
+}
+
+.arrow-top .r-line {
+    height: 25%;
+    border: 1px solid rgba(255, 255, 255, 0.534);
+    width: 1px;
+    transform: rotate(-45deg);
+    position: relative;
+    right: -12%;
+    top: -36%;
+}
+
+
+/* bottom */
+.arrow-bottom .l-left {
+    height: 25%;
+    border: 1px solid rgba(255, 255, 255, 0.534);
+    width: 1px;
+    transform: rotate(-45deg);
+    position: relative;
+    left: -12%;
+    bottom: -36%;
+}
+
+.arrow-bottom .m-line {
+    border: 1px solid rgba(255, 255, 255, 0.534);
+    width: 1px;
+    height: 100%;
+}
+
+.arrow-bottom .r-line {
+    height: 25%;
+    border: 1px solid rgba(255, 255, 255, 0.534);
+    width: 1px;
+    transform: rotate(45deg);
+    position: relative;
+    right: -12%;
+    bottom: -36%;
+}
+
+  .pointer {
+    width: 8px;
+    height: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.534);
+    background-color: white;
+    border-radius: 50%;
+  }
+
   .navigation {
     width: 70%;
     height: 40px;
@@ -605,20 +739,39 @@ b {
     margin: auto;
   }
 
-  #date {
+  .line {
+    border: 1px solid rgba(255, 255, 255, 0.534);
+    height: 20px;
+    position: absolute;
+  }
+
+  .ver-slide {
+    height: 100%;
+    width: 100%;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    display: none;
+  }
+
+  .active-day {
+    display: flex !important;
+  }
+
+
+  .date {
     display: flex;
-    font-size: 1.6em;
+    font-size: 1.5em;
     color: white;
     width: 100%;
     height: fit-content;
-    padding-top: 10px;
-    margin-bottom: 10px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-bottom: 2px;
   }
 
-  #date div {
+  .date div {
     display: flex;
     flex-direction: row;
     align-items: center;
