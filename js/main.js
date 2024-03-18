@@ -460,6 +460,9 @@ $(document).ready(function() {
 
     function getDateName(day_index, month_index, current_day, index) {
         day_index = day_index + index;
+        if(day_index > 6) {
+            day_index = 0;
+        }
         current_day = current_day + index;
         let day_key = WEEK_DAYS[day_index];
         let month_key = MONTHS[month_index];
@@ -493,6 +496,12 @@ $(document).ready(function() {
     }
 
     function printDayDates(day_index, month_index, current_day) {
+        if(day_index == 0) {
+            day_index = 5;
+        }
+        if(day_index == 1) {
+            day_index = 6;
+        }
         for(let i = 0; i < 3; i++) {
             getDateName(day_index, month_index, current_day, i);
         }
@@ -501,12 +510,16 @@ $(document).ready(function() {
     function currentDate(lan) {
         var current_date = new Date();
         var month_index = current_date.getMonth();
+
         CURRENT_MONTH = prayerTimes[month_index];
+
+
         var today = (current_date.getDate() - 1);
+
         var today_times = CURRENT_MONTH[current_day];
         var times = $(".time");
         let day_index = current_date.getDay();
-        printDayDates(day_index - 2, month_index, today - 1);
+        printDayDates(day_index, month_index, today - 1);
         
         
         for(let j = 0; j < 3; j++) {
@@ -519,7 +532,6 @@ $(document).ready(function() {
                 times[j * 5 + i].innerText = today_times[i];
             }
         }
-        
         if($(".current-month")[0] != undefined) {
             $(".current-month").removeClass("current-month");
         }
@@ -583,10 +595,13 @@ $(document).ready(function() {
     function countdown(index, today_times) {
         var x = setInterval(function() {
             var dt = new Date();
+
             let hour = dt.getHours();
             let minutes = dt.getMinutes();
             let number = (parseInt(hour) * 60) + (parseInt(minutes));
+
             CURRENT_MINUTES = number;
+
             let target_div = $(".empty")[index + 5];
             target_div.innerHTML = "";
             target_div.classList.add("target-div");
@@ -598,6 +613,7 @@ $(document).ready(function() {
             let mt = parseInt(today_times[index].split(":")[1]);
             let nr = (parseInt(hr) * 60) + (parseInt(mt));
             let difference = nr - number;
+
             let seconds = dt.getSeconds();
             div.innerText = parseInt(difference / 60) + ":" + (difference % 60) + ":" + (60 - seconds);
             if($(".next-prayer")[0] != undefined) {
@@ -605,8 +621,8 @@ $(document).ready(function() {
             }
             $(".prayer")[index + 5].classList.add("next-prayer");
             $(".target-div").append(div);
-            if(nr <= number && ((number - nr) <= PrayerTimer)) {
-                // 5 minutes
+            if(difference < 1) {
+                
                 $(".prayer")[index + 5].classList.add("prayer-time");
             }
             else if(nr < number) {
