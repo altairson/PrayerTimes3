@@ -1,12 +1,9 @@
 $(document).ready(function() {
-    const URL = "https://script.google.com/macros/s/AKfycbwBbQHotFk1fOJz39ePPYFt4pQAQOkdxSSQhEvtL19L2lGSREvX4iHcRNJkcUcjMD3tyA/exec";
-    var DATA = []; // will be filled from spreadsheet
 
-    var LANS = ["Qi", "En", "Ru", "Ge"];
+    
     const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
-    const WEEK_DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+    const WEEK_DAYS = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
     var CURRENT_LANGUAGE = "En";
-    var CURRENT_MONTH_TRANSLATION = "january";
 
     var CURRENT_MONTH = [];
 
@@ -15,9 +12,6 @@ $(document).ready(function() {
     var SLIDES = $(".slide");
     var TOTAL_SLIDES = SLIDES.length;
 
-    var DAY_INDEX = 1;
-    var DAYS = $(".ver-slide");
-    var TOTAL_DAYS = DAYS.length;
 
     var centerX = 100;
     var centerY = 100;
@@ -41,16 +35,56 @@ $(document).ready(function() {
         notifyBefore: 0
     }
 
-    const minimalSwipeDistance = 50;
+    
 
     var PrayerTimer = 5;
 
 
-    SLIDES[SLIDE_INDEX].classList.add("active-slide");
 
-    DAYS[DAY_INDEX].classList.add("active-day");
 
-    // slide days
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // pages slides left-right
+    var SLIDE_INDEX = 0;
+    var SLIDES = $(".slide");
+    var TOTAL_SLIDES = SLIDES.length;
+
+    // days slides top-bottom
+    var DAY_INDEX = 1;
+    var DAYS = $(".ver-slide");
+
+    // Swipe gesture handling left-right
+    var touchstartX = 0;
+    var touchendX = 0;
+
+    // Swipe gesture handling top-bottom
+    var touchstartY = 0;
+    var touchendY = 0;
+
+    // how many pixels should user swipe to trigger gesture
+    const minimalSwipeDistance = 50;
+
+    // define whether sun is displayed or not
+    var isSun = true;
+
+    const LANGUAGES = ["Qi", "En", "Ru", "Ge"];
+
+    // slide down to next day
     function showNextDay() {
         if(DAY_INDEX >= 2) {
             return;
@@ -58,7 +92,7 @@ $(document).ready(function() {
         DAYS[DAY_INDEX].classList.remove("active-day");
         $(".day-indicator")[DAY_INDEX].classList.remove("day-active");
         if(DAY_INDEX == 2) {
-            $(".day-next")[0].dissabled = true;
+            $(".day-next")[0].disabled = true;
         }
         else {
             DAY_INDEX = DAY_INDEX + 1;
@@ -67,7 +101,7 @@ $(document).ready(function() {
         $(".day-indicator")[DAY_INDEX].classList.add("day-active");
     }
 
-
+    // slide up to previous day
     function showPreviousDay() {
         if(DAY_INDEX <= 0) {
             return;
@@ -76,7 +110,7 @@ $(document).ready(function() {
         $(".day-indicator")[DAY_INDEX].classList.remove("day-active");
         
         if(DAY_INDEX == 0) {
-            $(".day-prev")[0].dissabled = true;
+            $(".day-prev")[0].disabled = true;
         } 
         else {
             DAY_INDEX = DAY_INDEX - 1;
@@ -86,7 +120,10 @@ $(document).ready(function() {
     }
 
 
+ 
 
+
+    // slide right to next slide 
     function showNextSlide() {
         $(".close").click();
         SLIDES[SLIDE_INDEX].classList.remove("active-slide");
@@ -96,6 +133,7 @@ $(document).ready(function() {
         $(".indicator")[SLIDE_INDEX].classList.add("active");
     }
 
+    // slide left to previous slide
     function showPreviousSlide() {
         $(".close").click();
         SLIDES[SLIDE_INDEX].classList.remove("active-slide");
@@ -105,44 +143,23 @@ $(document).ready(function() {
         $(".indicator")[SLIDE_INDEX].classList.add("active");
     }
 
-    
 
-    $('.day-prev').click(function() {
-        showPreviousDay();
-    });
-
-    $('.day-next').click(function() {
-        showNextDay();
-    });
 
     
-    $('.next').click(function() {
-        showPreviousSlide();
-    });
-
-    $('.prev').click(function() {
-        showNextSlide();
-    });
-
-    // Swipe gesture handling
-    var touchstartX = 0;
-    var touchendX = 0;
-
-    // Swipe gesture handling top-bottom
-    var touchstartY = 0;
-    var touchendY = 0;
-
+    // on mobile phones trigger this when screen touch starts
     document.querySelector('.slider-container').addEventListener('touchstart', function(event) {
         touchstartX = event.changedTouches[0].screenX;
         touchstartY = event.changedTouches[0].screenY;
     }, false);
 
+    // on mobile phones trigger this when screen touch ends
     document.querySelector('.slider-container').addEventListener('touchend', function(event) {
         touchendX = event.changedTouches[0].screenX;
         touchendY = event.changedTouches[0].screenY;
         handleGesture();
     }, false);
 
+    // calculate to which direction user swiped 
     function handleGesture() {
         var distanceX = touchendX - touchstartX;
         var distanceY = touchendY - touchstartY;
@@ -168,16 +185,36 @@ $(document).ready(function() {
         }
     }
 
+
+    // event listeners  / button clicks
+    $('.day-prev').click(function() {
+        showPreviousDay();
+    });
+
+    $('.day-next').click(function() {
+        showNextDay();
+    });
+
+    
+    $('.next').click(function() {
+        showPreviousSlide();
+    });
+
+    $('.prev').click(function() {
+        showNextSlide();
+    });
+
+
+    // function to change language
     function changeLanguage(n) {
         try {
-            let lan = LANS[n];
+            let lan = LANGUAGES[n];
             CURRENT_LANGUAGE = lan;
             for(let i = 0; i < translations.length; i++) {
                 let key = Object.keys(translations[i])[0];
-                console.log(key);
-                let elems = $(`.${key}`);
-                for(let j = 0; j < elems.length; j++) {
-                    elems[j].innerHTML = translations[i][key][lan];
+                let elements = $(`.${key}`);
+                for(let j = 0; j < elements.length; j++) {
+                    elements[j].innerHTML = translations[i][key][lan];
                 }
             }
             if($(".current-month")[0] != undefined) {
@@ -189,6 +226,297 @@ $(document).ready(function() {
         }
         
     }
+
+    // change theme dark-light
+    function changeTheme(isDark) {
+        if(isDark) {
+            isSun = false;
+            $(".prayer").addClass("dark-theme");
+            $(".month").addClass("dark-theme");
+            $(".content").addClass("dark-theme");
+            $(".option").addClass("dark-theme");
+
+            $(".night").removeClass("hidden");
+            $("#sun").addClass("hidden");
+            $("#moon").removeClass("hidden");
+            // animateMoon();
+        }
+        else {
+            isSun = true;
+            $(".dark-theme").removeClass("dark-theme");
+            $("#moon").addClass("hidden");
+            $("#sun").removeClass("hidden");
+            $(".night").addClass("hidden");
+            // animateSun();
+        }
+    }
+
+
+    // Function to retrieve settings from localStorage
+    function getSettings() {
+        var settingsJSON = localStorage.getItem('settings');
+        return settingsJSON ? JSON.parse(settingsJSON) : null;
+    }
+
+
+
+    var CURRENT_MINUTES = 0;
+
+    function countdown(index) {
+        var x = setInterval(function() {
+            var dt = new Date();
+            let hour = dt.getHours();
+            let minutes = dt.getMinutes();
+            let number = (parseInt(hour) * 60) + (parseInt(minutes));
+
+
+
+            let target_div = $(".empty")[index + 5];
+            target_div.innerHTML = "";
+            target_div.classList.add("target-div");
+            let p = document.createElement("p");
+            p.innerText = $("#remaining")[0].innerText;
+            $(".target-div").append(p);
+            let div = document.createElement("DIV");
+            let nr = TIMES_OF_3_DAYS[index];
+            let difference = nr - number;
+
+            let seconds = dt.getSeconds();
+            div.innerText = parseInt(difference / 60) + ":" + (difference % 60) + ":" + (60 - seconds);
+            if($(".next-prayer")[0] != undefined) {
+                $(".next-prayer").removeClass("next-prayer");
+            }
+            $(".prayer")[index + 5].classList.add("next-prayer");
+            $(".target-div").append(div);
+            if(difference < 0) {
+                $(".prayer")[index + 5].classList.remove("prayer-time");
+                clearInterval(x);
+                findNextPrayer();
+            }
+        }, 1000);
+    }
+
+    function highlightPath(index) {
+        if($(".highlighted")[0] != undefined) {
+            $(".highlighted").removeClass("highlighted");
+        }
+        let pointers = $(".pointer");
+        let lines = $(".line");
+        pointers[index + 6].classList.add("highlighted");
+        lines[index + 6].classList.add("highlighted");
+    }
+
+
+
+    function findNextPrayer() {
+        var date = new Date();
+        let hour = date.getHours();
+        let minutes = date.getMinutes();
+        let total_minutes = (parseInt(hour) * 60) + (parseInt(minutes));
+
+        let match_index = -1;
+        for(let i = 0; i < 5; i++) {
+            console.log(total_minutes + " <-> " + TIMES_OF_3_DAYS[i]);
+            if(total_minutes > TIMES_OF_3_DAYS[i]) {
+                match_index = i;
+            }
+        }
+        console.log(match_index);
+
+        if(match_index != -1) {
+            highlightPath(match_index + 1);
+            countdown(match_index + 1);
+            $("#note").addClass("hidden");
+        }
+        else {
+            highlightPath(0);
+            $("#note").removeClass("hidden");
+        }
+    }
+
+
+
+
+
+    function printDayDates(current_month, current_day, week_day, index) {
+        let day_key = WEEK_DAYS[week_day];
+        let month_key = MONTHS[current_month];
+        let day_translation = translations.find(obj => obj.hasOwnProperty(day_key))[day_key][CURRENT_LANGUAGE];
+        let month_translation = translations.find(obj => obj.hasOwnProperty(month_key))[month_key][CURRENT_LANGUAGE];
+
+        let p = document.createElement("P");
+        p.innerText = day_translation;
+        p.classList.add(day_key);
+
+        let div = document.createElement("DIV");
+
+        let p1 = document.createElement("P");
+        p1.innerText = current_day + 1;
+
+        let p2 = document.createElement("P");
+        p2.innerText = month_translation;
+        p2.style.marginRight = "10px";
+        p2.classList.add(month_key);
+
+        div.append(p2);
+        div.append(p1);
+
+        $(".date")[index].append(p);
+        $(".date")[index].append(div);
+    }
+
+    var TIMES_OF_3_DAYS = [];
+
+    function calculateTotalMinutes(time) {
+        let hours = parseInt(time.split(":")[0]);
+        let minutes = parseInt(time.split(":")[1]);
+        let result = (hours * 60) + minutes;
+        TIMES_OF_3_DAYS.push(result);
+    }
+
+
+    function printTimes(current_month, current_day, index) {
+        var month_times = prayerTimes[current_month];
+        var today_times = month_times[current_day];
+        var times = $(".time");
+        
+        for(let i = 0; i < 5; i++) {
+            times[index * 5 + i].innerText = today_times[i];
+            calculateTotalMinutes(today_times[i]);
+        }
+        if($(".current-month")[0] != undefined) {
+            $(".current-month").removeClass("current-month");
+        }
+        $(".month")[current_month].classList.add("current-month");
+        $(".month")[current_month].click();
+
+        if(index == 2) {
+            findNextPrayer();
+        }
+    }
+
+    function PrintWeekDaysAndTimes() {
+        let today = new Date();
+        let today_month = today.getMonth();
+        let today_day = (today.getDate() - 1);
+        let today_week_day = today.getDay();
+        printDayDates(today_month, today_day, today_week_day, 1);
+        printTimes(today_month, today_day, 1);
+        
+
+        let yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+        let yesterday_month = yesterday.getMonth();
+        let yesterday_day = (yesterday.getDate() - 1);
+        let yesterday_week_day = yesterday.getDay();
+        printDayDates(yesterday_month, yesterday_day, yesterday_week_day, 0);
+        printTimes(yesterday_month, yesterday_day, 0);
+
+        let tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        let tomorrow_month = tomorrow.getMonth();
+        let tomorrow_day = (tomorrow.getDate() - 1);
+        let tomorrow_week_day = tomorrow.getDay();
+        printDayDates(tomorrow_month, tomorrow_day, tomorrow_week_day, 2);
+        printTimes(tomorrow_month, tomorrow_day, 2);
+    }
+
+
+
+
+
+
+
+
+
+
+    function applySettings() {
+        var savedSettings = getSettings();
+        if(savedSettings != null) {
+            changeTheme(savedSettings.dark_theme);
+            changeLanguage(savedSettings.lan);
+            $("#lan")[0].value = savedSettings.lan;
+            $("#darkTheme")[0].checked = savedSettings.dark_theme;
+            PrintWeekDaysAndTimes();
+        }
+        else {
+            changeLanguage(1);
+            PrintWeekDaysAndTimes();
+        }
+    }
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    
+
+   
+
+    
+
+    
 
     $("#lan").change(function() {
         let lan = parseInt($("#lan").val());
@@ -383,7 +711,7 @@ $(document).ready(function() {
         sun.style.left = x + "%";
     }
 
-    var isSun = true;
+    
 
     var test = 0;
     function animateSun() {
@@ -458,180 +786,15 @@ $(document).ready(function() {
         $("#feedback").toggleClass("hidden");
     })
 
-    function getDateName(day_index, month_index, current_day, index) {
-        day_index = day_index + index;
-        if(day_index > 6) {
-            day_index = 0;
-        }
-        current_day = current_day + index;
-        let day_key = WEEK_DAYS[day_index];
-        let month_key = MONTHS[month_index];
-
-        let day_translation = translations.find(obj => obj.hasOwnProperty(day_key))[day_key][CURRENT_LANGUAGE];
-        
-        let month_translation = translations.find(obj => obj.hasOwnProperty(month_key))[month_key][CURRENT_LANGUAGE];
-
-        // CURRENT_MONTH_TRANSLATION = month_key;
-
-        let p = document.createElement("P");
-        p.innerText = day_translation;
-        p.classList.add(day_key);
-
-        let div = document.createElement("DIV");
-
-        let p1 = document.createElement("P");
-        p1.innerText = current_day + 1;
-
-
-        let p2 = document.createElement("P");
-        p2.innerText = month_translation;
-        p2.style.marginRight = "10px";
-        p2.classList.add(month_key);
-
-        div.append(p2);
-        div.append(p1);
-
-        $(".date")[index].append(p);
-        $(".date")[index].append(div);
-    }
-
-    function printDayDates(day_index, month_index, current_day) {
-        if(day_index == 0) {
-            day_index = 5;
-        }
-        if(day_index == 1) {
-            day_index = 6;
-        }
-        for(let i = 0; i < 3; i++) {
-            getDateName(day_index, month_index, current_day, i);
-        }
-    }
-
-    function currentDate(lan) {
-        var current_date = new Date();
-        var month_index = current_date.getMonth();
-
-        CURRENT_MONTH = prayerTimes[month_index];
-
-
-        var today = (current_date.getDate() - 1);
-
-        var today_times = CURRENT_MONTH[current_day];
-        var times = $(".time");
-        let day_index = current_date.getDay();
-        printDayDates(day_index, month_index, today - 1);
-        
-        
-        for(let j = 0; j < 3; j++) {
-            var current_day = (current_date.getDate() - 2) + j;
-            var today_times = CURRENT_MONTH[current_day];
-            if(j == 1) {
-                findNextPrayer(today_times);
-            }
-            for(let i = 0; i < 5; i++) {
-                times[j * 5 + i].innerText = today_times[i];
-            }
-        }
-        if($(".current-month")[0] != undefined) {
-            $(".current-month").removeClass("current-month");
-        }
-        $(".month")[month_index].classList.add("current-month");
-        $(".month")[month_index].click();
-    }
+    
 
 
 
-    function findNextPrayer(today_times) {
-        var dt = new Date();
-        let hour = dt.getHours();
-        let minutes = dt.getMinutes();
-        let number = (parseInt(hour) * 60) + (parseInt(minutes));
-        let index = -1;
-        for(let i = 0; i < 5; i++) {
-            let hr = today_times[i].split(":")[0];
-            let mt = today_times[i].split(":")[1];
-            let nr = (parseInt(hr) * 60) + (parseInt(mt));
-            if(nr > number) {
+   
 
-                index = i;
-                break;
-            }
-        }
-        if(index != -1) {
-            countdown(index, today_times, number);
-            $("#note").addClass("hidden");
-        }
-        else {
-            $("#note").removeClass("hidden");
-        }
-    }
+    
 
-    function changeTheme(isDark) {
-        if(isDark) {
-            isSun = false;
-            $(".prayer").addClass("dark-theme");
-            $(".month").addClass("dark-theme");
-            $(".content").addClass("dark-theme");
-            $(".option").addClass("dark-theme");
-
-            $(".night").removeClass("hidden");
-            $("#sun").addClass("hidden");
-            $("#moon").removeClass("hidden");
-            // animateMoon();
-        }
-        else {
-            isSun = true;
-            $(".dark-theme").removeClass("dark-theme");
-
-            $("#moon").addClass("hidden");
-            $("#sun").removeClass("hidden");
-            $(".night").addClass("hidden");
-            // animateSun();
-        }
-    }
-
-    var CURRENT_MINUTES = 0;
-
-    function countdown(index, today_times) {
-        var x = setInterval(function() {
-            var dt = new Date();
-
-            let hour = dt.getHours();
-            let minutes = dt.getMinutes();
-            let number = (parseInt(hour) * 60) + (parseInt(minutes));
-
-            CURRENT_MINUTES = number;
-
-            let target_div = $(".empty")[index + 5];
-            target_div.innerHTML = "";
-            target_div.classList.add("target-div");
-            let p = document.createElement("p");
-            p.innerText = $("#remaining")[0].innerText;
-            $(".target-div").append(p);
-            let div = document.createElement("DIV");
-            let hr = parseInt(today_times[index].split(":")[0]);
-            let mt = parseInt(today_times[index].split(":")[1]);
-            let nr = (parseInt(hr) * 60) + (parseInt(mt));
-            let difference = nr - number;
-
-            let seconds = dt.getSeconds();
-            div.innerText = parseInt(difference / 60) + ":" + (difference % 60) + ":" + (60 - seconds);
-            if($(".next-prayer")[0] != undefined) {
-                $(".next-prayer").removeClass("next-prayer");
-            }
-            $(".prayer")[index + 5].classList.add("next-prayer");
-            $(".target-div").append(div);
-            if(difference < 1) {
-                
-                $(".prayer")[index + 5].classList.add("prayer-time");
-            }
-            else if(nr < number) {
-                $(".prayer")[index + 5].classList.remove("prayer-time");
-                clearInterval(x);
-                findNextPrayer(today_times);
-            }
-        }, 1000);
-    }
+    
 
 
 
@@ -675,11 +838,7 @@ $(document).ready(function() {
         saveSettings(settings);
     }
 
-    // Function to retrieve settings from localStorage
-    function getSettings() {
-        var settingsJSON = localStorage.getItem('settings');
-        return settingsJSON ? JSON.parse(settingsJSON) : null;
-    }
+   
 
     // Function to save settings to localStorage
     function saveSettings(updatedSettings) {
@@ -688,20 +847,7 @@ $(document).ready(function() {
 
     var LAN_SHORT_NAMES = ["RU", "EN", "RU", "GE"];
 
-    function applySettings() {
-        var savedSettings = getSettings();
-        if(savedSettings != null) {
-            changeTheme(savedSettings.dark_theme);
-            changeLanguage(savedSettings.lan);
-            $("#lan")[0].value = savedSettings.lan;
-            $("#darkTheme")[0].checked = savedSettings.dark_theme;
-            currentDate(LAN_SHORT_NAMES[savedSettings.lan]);
-        }
-        else {
-            changeLanguage(1);
-            currentDate("EN");
-        }
-    }
+    
 
     $(".month").click(function() {
         if(SLIDE_INDEX != 0) {
@@ -1524,5 +1670,10 @@ $(document).ready(function() {
         }
     ]
 
+
+    // default states
+    SLIDES[SLIDE_INDEX].classList.add("active-slide");
+    DAYS[DAY_INDEX].classList.add("active-day");
     applySettings();
+    
 })
