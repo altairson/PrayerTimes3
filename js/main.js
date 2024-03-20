@@ -267,7 +267,13 @@ $(document).ready(function() {
     }
 
     $("#testAdhan").click(function() {
-        itsPrayerTime();
+        let prayer = $(".next-prayer")[0];
+        let title = prayer.children[0].children[0].children[4].children[0].children[0].innerText;
+        let message = prayer.children[0].children[0].children[4].children[0].children[1].innerText;
+        let hour = parseInt(message.split(":")[0]);
+        let increment = hour < 12 ? " AM" : " PM";
+        message += increment;
+        itsPrayerTime(title, message);
     })
 
     // Function to retrieve settings from localStorage
@@ -336,6 +342,9 @@ $(document).ready(function() {
                 itsPrayerTime(title, message);
             }
             if(acurate_difference < 0) {
+                if($(".target-div")[0] != undefined) {
+                    $(".target-div").remove();
+                }
                 clearInterval(x);
                 findNextPrayer();
             }
