@@ -57,7 +57,8 @@ $(document).ready(function() {
 
 
 
-
+    var ADHANS = ['adhan', 'adhan2', 'adhan3'];
+    var ADHAN_INDEX = 0;
 
     // pages slides left-right
     var SLIDE_INDEX = 0;
@@ -185,6 +186,15 @@ $(document).ready(function() {
         }
     }
 
+    function showNotification(title, text) {
+        var notificationOn = $('#prayerOn')[0].checked;
+        var soundOn =  $("#SoundOn")[0].checked;
+        if(notificationOn && soundOn) {
+            var adhan = ADHANS[ADHAN_INDEX];
+            Android.showNotification(title, text, adhan);
+        }
+    }
+
 
     // event listeners  / button clicks
     $('.day-prev').click(function() {
@@ -203,6 +213,11 @@ $(document).ready(function() {
     $('.prev').click(function() {
         showNextSlide();
     });
+
+
+    $("#adhan").change(function() {
+        ADHAN_INDEX = parseInt($("#adhan")[0].value);
+    })
 
 
     // function to change language
@@ -251,6 +266,9 @@ $(document).ready(function() {
         }
     }
 
+    $("#testAdhan").click(function() {
+        itsPrayerTime();
+    })
 
     // Function to retrieve settings from localStorage
     function getSettings() {
@@ -258,7 +276,15 @@ $(document).ready(function() {
         return settingsJSON ? JSON.parse(settingsJSON) : null;
     }
 
+    function itsPrayerTime(title, message) {
+        showNotification(title, message);
+    }
 
+    function notifyInAdvance(title, message) {
+        if($("#beforePrayerOn")[0].checked) {
+            showNotification(title, message);
+        }
+    }
 
     var CURRENT_MINUTES = 0;
 
@@ -280,16 +306,36 @@ $(document).ready(function() {
             let div = document.createElement("DIV");
             let nr = TIMES_OF_3_DAYS[index];
             let difference = nr - number;
-
             let seconds = dt.getSeconds();
+            let acurate_difference = difference * 60 + (60 - seconds);
+            
             div.innerText = parseInt(difference / 60) + ":" + (difference % 60) + ":" + (60 - seconds);
             if($(".next-prayer")[0] != undefined) {
                 $(".next-prayer").removeClass("next-prayer");
             }
             $(".prayer")[index + 5].classList.add("next-prayer");
             $(".target-div").append(div);
-            if(difference < 0) {
-                $(".prayer")[index + 5].classList.remove("prayer-time");
+
+
+            if(acurate_difference == 300) {
+                let prayer = $(".next-prayer")[0];
+                let title = "5 minutes till " + prayer.children[0].children[0].children[4].children[0].children[0].innerText;
+                let message = prayer.children[0].children[0].children[4].children[0].children[1].innerText;
+                let hour = parseInt(message.split(":")[0]);
+                let increment = hour < 12 ? " AM" : " PM";
+                message += increment;
+                notifyInAdvance(title, message);
+            }
+            if(acurate_difference == 0) {
+                let prayer = $(".next-prayer")[0];
+                let title = prayer.children[0].children[0].children[4].children[0].children[0].innerText;
+                let message = prayer.children[0].children[0].children[4].children[0].children[1].innerText;
+                let hour = parseInt(message.split(":")[0]);
+                let increment = hour < 12 ? " AM" : " PM";
+                message += increment;
+                itsPrayerTime(title, message);
+            }
+            if(acurate_difference < 0) {
                 clearInterval(x);
                 findNextPrayer();
             }
@@ -323,14 +369,14 @@ $(document).ready(function() {
         }
         console.log(match_index);
 
-        if(match_index != -1) {
+        if(match_index == 4) {
+            highlightPath(0);
+            $("#note").removeClass("hidden");
+        }
+        else {
             highlightPath(match_index + 1);
             countdown(match_index + 1);
             $("#note").addClass("hidden");
-        }
-        else {
-            highlightPath(0);
-            $("#note").removeClass("hidden");
         }
     }
 
@@ -437,6 +483,9 @@ $(document).ready(function() {
             changeLanguage(savedSettings.lan);
             $("#lan")[0].value = savedSettings.lan;
             $("#darkTheme")[0].checked = savedSettings.dark_theme;
+            $("#prayerOn")[0].checked = savedSettings.notify;
+            $("#SoundOn")[0].checked = savedSettings.sound;
+            $("#beforePrayerOn")[0].checked = savedSettings.notifyBefore;
             PrintWeekDaysAndTimes();
         }
         else {
@@ -444,10 +493,6 @@ $(document).ready(function() {
             PrintWeekDaysAndTimes();
         }
     }
-
-
-
-
 
 
 
